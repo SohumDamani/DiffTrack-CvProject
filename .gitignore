@@ -175,3 +175,14 @@ dump*
 debug/
 trash/
 output/
+
+# Claude internal memory — keep local only
+.claude/
+
+# Large binary / generated outputs
+*.mp4
+2506.17220v2.pdf
+
+# Result frame dumps (large PNG sequences) — keep logs/attn_maps, skip raw frames
+results/**/gt/
+results/**/pred/

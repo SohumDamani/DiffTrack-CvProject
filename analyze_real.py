@@ -9,7 +9,7 @@ from diffusers import CogVideoXPipeline
 
 from utils.confidence_attention_score import ConfidenceAttentionScore
 from utils.evaluation import MatchingEvaluator
-from utils.aggregate_results import score_mean, accuracy_mean
+from utils.aggregate_results import save_score_mean as score_mean, save_accuracy_mean as accuracy_mean
 from utils.tapvid import TAPVid
 
 
@@ -178,6 +178,9 @@ if __name__=="__main__":
     parser.add_argument('--resize_h', type=int, default=480)
     parser.add_argument('--resize_w', type=int, default=720)
     parser.add_argument("--video_max_len", type=int, default=49)
+    parser.add_argument('--start', type=int, default=0)
+    parser.add_argument('--end', type=int, default=0)
+    parser.add_argument('--pck', action='store_true')
 
     args = parser.parse_args()
 

@@ -1,0 +1,2 @@
+Error while loading conda entry point: conda-libmamba-solver (/home/sdama009/miniconda3/lib/python3.13/lib-dynload/_sqlite3.cpython-313-x86_64-linux-gnu.so: undefined symbol: sqlite3_deserialize)
+Error while loading conda entry point: conda-libmamba-solver (/home/sdama009/miniconda3/lib/python3.13/lib-dynload/_sqlite3.cpython-313-x86_64-linux-gnu.so: undefined symbol: sqlite3_deserialize)

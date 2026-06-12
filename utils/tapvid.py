@@ -140,6 +140,8 @@ class TAPVid(torch.utils.data.Dataset):
             with open(data_root, "rb") as f:
                 self.points_dataset = pickle.load(f)
                 self.video_names = sorted(list(self.points_dataset.keys()))
+            end = args.end if args.end > 0 else len(self.video_names)
+            self.video_names = self.video_names[args.start:end]
 
 
         elif "rgb_stacking" in self.dataset_type:
@@ -192,4 +194,6 @@ class TAPVid(torch.utils.data.Dataset):
         return frames, trajs, visibles, query_points, frames_ori
 
     def __len__(self):
+        if "davis" in self.dataset_type:
+            return len(self.video_names)
         return len(self.points_dataset)

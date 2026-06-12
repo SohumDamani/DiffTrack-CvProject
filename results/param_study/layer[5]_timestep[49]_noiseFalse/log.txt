@@ -1,0 +1,8 @@
+Video 0 (69 frames)| delta_avg: 25.19 | delta_1: 0.37 | delta_2: 3.37 | delta_4: 19.33 | delta_8: 42.14 | delta_16: 60.72
+Video 1 (50 frames)| delta_avg: 37.39 | delta_1: 1.22 | delta_2: 10.20 | delta_4: 27.35 | delta_8: 61.22 | delta_16: 86.94
+Mean delta_avg: 31.3
+Mean delta_1: 0.8
+Mean delta_2: 6.8
+Mean delta_4: 23.3
+Mean delta_8: 51.7
+Mean delta_16: 73.8

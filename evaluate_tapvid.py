@@ -243,6 +243,8 @@ def main(args):
     PARAMS['matching_layer'] = matching_layer
 
     for j, (video, gt_trajectory, visibility, query_points_i, video_ori) in enumerate(dataloader):
+        if args.end > 0 and j >= args.end:
+            break
         valid_mask = (query_points_i[:,:,0] == 0)
         if not torch.any(valid_mask):
             continue
@@ -255,6 +257,7 @@ def main(args):
             video = video[:,:args.video_max_len, ...]
             gt_trajectory = gt_trajectory[:, :args.video_max_len, :, :]
             visibility = visibility[:, :args.video_max_len, :]
+            video_ori = video_ori[:, :args.video_max_len, ...]
 
         _, T, _, H, W = video.shape
 
@@ -264,9 +267,9 @@ def main(args):
             gt_trajectory_vis[..., 0] *= (W_ori / 256)
             gt_trajectory_vis[..., 1] *= (H_ori / 256)
             vis = Visualizer(save_dir=os.path.join(output_dir, 'gt'), pad_value=0, linewidth=3, show_first_frame=1, tracks_leave_trace=args.tracks_leave_trace)
-            frames = vis.visualize(video=video_ori, tracks=gt_trajectory_vis, filename =f"{j:03d}.mp4", query_frame=0, visibility=visibility)
-            
-            gt_dir = os.path.join(output_dir, 'gt', f'{j:03d}')
+            frames = vis.visualize(video=video_ori, tracks=gt_trajectory_vis, filename =f"{j + args.j_offset:03d}.mp4", query_frame=0, visibility=visibility)
+
+            gt_dir = os.path.join(output_dir, 'gt', f'{j + args.j_offset:03d}')
             os.makedirs(gt_dir, exist_ok=True)
             for f, frame in enumerate(frames[0]):
                 to_pil(frame).save(os.path.join(gt_dir, f'{f}.png'))
@@ -366,9 +369,9 @@ def main(args):
             vis_traj[..., 0] *= (W_ori / W)
             vis_traj[..., 1] *= (H_ori / H)
             vis = Visualizer(save_dir=os.path.join(output_dir, 'pred'), pad_value=0, linewidth=3, show_first_frame=1, tracks_leave_trace=args.tracks_leave_trace)
-            frames = vis.visualize(video=video_ori, tracks=vis_traj, filename =f"{j:03d}.mp4", query_frame=0)
-            
-            pred_dir = os.path.join(output_dir, 'pred', f'{j:03d}')
+            frames = vis.visualize(video=video_ori, tracks=vis_traj, filename =f"{j + args.j_offset:03d}.mp4", query_frame=0)
+
+            pred_dir = os.path.join(output_dir, 'pred', f'{j + args.j_offset:03d}')
             os.makedirs(pred_dir, exist_ok=True)
             for f, frame in enumerate(frames[0]):
                 to_pil(frame).save(os.path.join(pred_dir, f'{f}.png'))
@@ -383,7 +386,9 @@ def main(args):
         
         out_metrics = compute_tapvid_metrics(query_points_np, gt_occluded, gt_tracks, pred_occluded, pred_tracks,"first" if queried_first else "strided")
         evaluator.update(out_metrics, T, log_file=os.path.join(output_dir, 'log.txt'))
-        
+
+        if args.max_videos > 0 and j + 1 >= args.max_videos:
+            break
 
     evaluator.report(log_file=os.path.join(output_dir, 'log.txt'))
     print(f"Evaluation result saved at {output_dir}")
@@ -419,6 +424,8 @@ if __name__ == "__main__":
 
     parser.add_argument('--start', type=int, default=0)
     parser.add_argument('--end', type=int, default=0)
+    parser.add_argument('--j_offset', type=int, default=0)
+    parser.add_argument('--max_videos', type=int, default=-1)
 
     args = parser.parse_args()
 

@@ -1,0 +1,10 @@
+Video 0 (69 frames)| delta_avg: 23.44 | delta_1: 0.50 | delta_2: 4.36 | delta_4: 19.70 | delta_8: 38.28 | delta_16: 54.36
+Video 1 (50 frames)| delta_avg: 35.18 | delta_1: 0.00 | delta_2: 4.08 | delta_4: 13.88 | delta_8: 57.96 | delta_16: 100.00
+Video 2 (80 frames)| delta_avg: 29.23 | delta_1: 2.11 | delta_2: 5.39 | delta_4: 14.83 | delta_8: 42.04 | delta_16: 81.80
+Video 3 (84 frames)| delta_avg: 45.79 | delta_1: 3.28 | delta_2: 18.29 | delta_4: 42.41 | delta_8: 70.88 | delta_16: 94.09
+Mean delta_avg: 33.4
+Mean delta_1: 1.5
+Mean delta_2: 8.0
+Mean delta_4: 22.7
+Mean delta_8: 52.3
+Mean delta_16: 82.6
