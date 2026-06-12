@@ -191,18 +191,31 @@ CUDA_VISIBLE_DEVICES=0 python motion_guidance.py \
 This fork reproduces and extends DiffTrack on TAP-Vid-DAVIS using CogVideoX-2B.
 
 ### Result Logs & Metrics
-All experiment metric logs (`log.txt` per run) are committed in `results/`. Key findings:
+All experiment metric logs (`log.txt` per run) are committed in `results/`. delta_avg = % of tracked points within distance threshold (higher = better).
+
+**Timestep convention**: Code's `--matching_timestep` is a 0-indexed denoising step; `ts=49` = paper's `t=1` (near-clean, optimal). `ts=1` = paper's `t=50` (near-pure noise).
+
+#### Layer and Timestep Ablation (l=17, CogVideoX-2B, TAP-Vid DAVIS)
 
 | Config | Mean delta_avg | Notes |
 |---|---|---|
-| layer=17, ts=10 | **13.1** | Best config |
-| layer=5, ts=49 | 31.3 | Shallow layer |
-| layer=27, ts=49 | 37.0 | Deep layer |
-| layer=17, ts=49 | 47.0 | Baseline |
-| layer=17, ts=30 | 47.8 | Mid timestep |
-| layer=8, ts=49 | 41.9 | Positional bias |
-| layer=29, ts=49 | 38.0 | Over-abstracted |
-| layer=17, ts=1 | 0.0 | Fully denoised — dead |
+| layer=17, ts=30 | **47.8** | Best: slight peak just before final step (paper Fig 4c) |
+| layer=17, ts=49 | 47.0 | Paper's recommended config (l=17, t=1); paper reports 46.3 on full DAVIS |
+| layer=17, ts=49, no-chunk | 46.4 | No chunked sliding window; marginal regression |
+| layer=17, ts=20 | 33.4 | Degraded at moderate noise |
+| layer=17, ts=10 | 13.1 | High noise — severe degradation (paper Fig 4c) |
+| layer=17, ts=5 | 0.8 | Near-noise — near-collapse (paper Fig 4c) |
+| layer=17, ts=1 | 0.0 | Near-pure noise — complete failure (paper Fig 4c, t≈50) |
+
+#### Layer Ablation (ts=49 = paper's t=1)
+
+| Config | Mean delta_avg | Notes |
+|---|---|---|
+| layer=5, ts=49 | 31.3 | Shallow layer — less semantic correspondence |
+| layer=8, ts=49 | 41.9 | Positional bias due to RoPE (paper Fig 6) |
+| layer=17, ts=49 | 47.0 | Optimal layer (paper Table 1, Fig A.18) |
+| layer=27, ts=49 | 37.0 | Over-deep layer — degraded |
+| layer=29, ts=49 | 38.0 | Bottom-3 layer, diffuse attention (paper Fig A.18) |
 
 ### Video Visualizations
 Tracking visualizations (~111 MP4 files, ~6.5 GB) are hosted on Google Drive:
