@@ -184,6 +184,35 @@ CUDA_VISIBLE_DEVICES=0 python motion_guidance.py \
 - `--cfg_scale`: Classifier-Free Guidance scale (default: `6.0`).
 
 
+---
+
+## CV Final Project — Experiment Results (Sohum Damani)
+
+This fork reproduces and extends DiffTrack on TAP-Vid-DAVIS using CogVideoX-2B.
+
+### Result Logs & Metrics
+All experiment metric logs (`log.txt` per run) are committed in `results/`. Key findings:
+
+| Config | Mean delta_avg | Notes |
+|---|---|---|
+| layer=17, ts=10 | **13.1** | Best config |
+| layer=5, ts=49 | 31.3 | Shallow layer |
+| layer=27, ts=49 | 37.0 | Deep layer |
+| layer=17, ts=49 | 47.0 | Baseline |
+| layer=17, ts=30 | 47.8 | Mid timestep |
+| layer=8, ts=49 | 41.9 | Positional bias |
+| layer=29, ts=49 | 38.0 | Over-abstracted |
+| layer=17, ts=1 | 0.0 | Fully denoised — dead |
+
+### Video Visualizations
+Tracking visualizations (~111 MP4 files, ~6.5 GB) are hosted on Google Drive:
+
+**[View Result Videos on Google Drive](https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing)**
+
+Videos are organized by experiment: `param_study/`, `limitations/`, `new_experiments/`, `full_eval_davis/`, and `cag_demo/`.
+
+---
+
 ### Citing this Work
 Please use the following bibtex to cite our work:
 ```
