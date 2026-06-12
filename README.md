@@ -199,7 +199,7 @@ All experiment metric logs (`log.txt` per run) are committed in `results/`. delt
 
 | Config | Mean delta_avg | Notes |
 |---|---|---|
-| layer=17, ts=30 | **47.8** | Best: slight peak just before final step (paper Fig 4c) |
+| layer=17, ts=30 | 47.8 | In plateau zone with ts=49 — 0.8pt difference within small-sample noise (paper Fig 4c) |
 | layer=17, ts=49 | 47.0 | Paper's recommended config (l=17, t=1); paper reports 46.3 on full DAVIS |
 | layer=17, ts=49, no-chunk | 46.4 | No chunked sliding window; marginal regression |
 | layer=17, ts=20 | 33.4 | Degraded at moderate noise |
