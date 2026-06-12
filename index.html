@@ -3,29 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="DiffTrack — Emergent Temporal Correspondences from Video Diffusion Transformers. NeurIPS 2025.">
-  <title>DiffTrack — Emergent Temporal Correspondences</title>
-
-  <!-- MathJax -->
-  <script>MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']]},svg:{fontCache:'global'}};</script>
-  <script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <meta name="description" content="DiffTrack — Reproduction & Ablation Study by Sohum Damani. CV Final Project.">
+  <title>DiffTrack — Reproduction &amp; Ablation Study</title>
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
-  <!-- FontAwesome + Academicons -->
+  <!-- FontAwesome -->
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <script defer src="./static/js/fontawesome.all.min.js"></script>
-
   <link rel="icon" href="./static/images/favicon.svg">
 
   <style>
-    /* ════════════════════════════════
-       RESET + DESIGN TOKENS
-    ════════════════════════════════ */
+    /* ══ RESET + TOKENS ══ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
@@ -35,21 +28,20 @@
       --border:        rgba(0, 220, 255, 0.09);
       --border-strong: rgba(0, 220, 255, 0.22);
       --accent:        #00DCFF;
-      --accent-dim:    rgba(0, 220, 255, 0.1);
+      --accent-dim:    rgba(0, 220, 255, 0.08);
       --green:         #00FFA3;
-      --green-dim:     rgba(0, 255, 163, 0.1);
+      --green-dim:     rgba(0, 255, 163, 0.08);
       --red:           #FF4D6D;
-      --red-dim:       rgba(255, 77, 109, 0.08);
+      --red-dim:       rgba(255, 77, 109, 0.07);
       --yellow:        #FFD166;
-      --yellow-dim:    rgba(255, 209, 102, 0.08);
-      --purple:        #7C3AED;
+      --yellow-dim:    rgba(255, 209, 102, 0.07);
       --text:          #D6E8F4;
       --text-dim:      #7A94A8;
       --text-muted:    #3F566A;
       --display:       'Space Grotesk', sans-serif;
       --sans:          'DM Sans', sans-serif;
       --mono:          'JetBrains Mono', monospace;
-      --radius:        4px;
+      --r:             4px;
     }
 
     html { scroll-behavior: smooth; }
@@ -63,294 +55,142 @@
       -webkit-font-smoothing: antialiased;
       cursor: none;
     }
-
     a { cursor: none; }
 
-    /* ════════════════════════════════
-       CUSTOM CURSOR
-    ════════════════════════════════ */
+    /* ══ CURSOR ══ */
     #cur-dot {
-      position: fixed;
-      width: 7px; height: 7px;
-      background: var(--accent);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9999;
-      transition: transform 0.15s ease, background 0.2s;
-      mix-blend-mode: screen;
+      position: fixed; width: 7px; height: 7px;
+      background: var(--accent); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transition: transform 0.15s ease; mix-blend-mode: screen;
     }
     #cur-ring {
-      position: fixed;
-      width: 30px; height: 30px;
-      border: 1px solid rgba(0,220,255,0.45);
-      border-radius: 50%;
-      pointer-events: none;
-      z-index: 9998;
+      position: fixed; width: 30px; height: 30px;
+      border: 1px solid rgba(0,220,255,0.4); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
       transition: transform 0.2s ease, border-color 0.2s;
     }
-    .cur-hover #cur-dot  { transform: scale(3); background: var(--accent); }
+    .cur-hover #cur-dot  { transform: scale(3); }
     .cur-hover #cur-ring { transform: scale(1.4); border-color: var(--accent); }
 
-    /* ════════════════════════════════
-       NAV
-    ════════════════════════════════ */
+    /* ══ NAV ══ */
     nav {
       position: sticky; top: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
       padding: 14px 48px;
-      background: rgba(6,9,15,0.88);
-      backdrop-filter: blur(16px);
+      background: rgba(6,9,15,0.9); backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
     }
     .nav-logo {
-      font-family: var(--display);
-      font-weight: 800; font-size: 15px;
-      letter-spacing: -0.02em; color: var(--accent);
-      text-decoration: none;
+      font-family: var(--display); font-weight: 800; font-size: 15px;
+      letter-spacing: -0.02em; color: var(--accent); text-decoration: none;
     }
-    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
     .nav-links a {
-      font-family: var(--display);
-      font-size: 12px; font-weight: 500;
+      font-family: var(--display); font-size: 12px; font-weight: 500;
       color: var(--text-dim); text-decoration: none;
       letter-spacing: 0.06em; text-transform: uppercase;
       position: relative; transition: color 0.2s;
     }
     .nav-links a::after {
-      content: ''; position: absolute;
-      bottom: -3px; left: 0; width: 0; height: 1px;
-      background: var(--accent); transition: width 0.3s ease;
+      content: ''; position: absolute; bottom: -3px; left: 0;
+      width: 0; height: 1px; background: var(--accent); transition: width 0.3s;
     }
     .nav-links a:hover { color: var(--accent); }
     .nav-links a:hover::after { width: 100%; }
 
-    /* ════════════════════════════════
-       LAYOUT HELPERS
-    ════════════════════════════════ */
-    .wrap {
-      max-width: 1160px;
-      margin: 0 auto;
-      padding: 0 48px;
-    }
-    .section-pad { padding: 72px 0; }
-
-    hr.div {
-      border: none;
-      border-top: 1px solid var(--border);
-    }
+    /* ══ LAYOUT ══ */
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
+    .pad  { padding: 64px 0; }
+    hr.div { border: none; border-top: 1px solid var(--border); }
 
     .lbl {
-      font-family: var(--mono);
-      font-size: 11px; font-weight: 500;
+      font-family: var(--mono); font-size: 11px; font-weight: 500;
       color: var(--accent); letter-spacing: 0.12em;
       text-transform: uppercase; margin-bottom: 10px;
     }
-
     .sec-title {
       font-family: var(--display);
-      font-size: clamp(28px, 4vw, 48px);
+      font-size: clamp(26px, 3.5vw, 44px);
       font-weight: 800; line-height: 1.08;
       letter-spacing: -0.03em; color: #EAF2FA;
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
-
     .body-text {
-      font-family: var(--sans);
-      font-size: 16px; line-height: 1.75;
-      color: var(--text-dim); max-width: 760px;
+      font-family: var(--sans); font-size: 16px;
+      line-height: 1.75; color: var(--text-dim); max-width: 780px;
     }
 
-    .split {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 48px; align-items: start;
-    }
-    .split.lean-left  { grid-template-columns: 3fr 2fr; }
-    .split.lean-right { grid-template-columns: 2fr 3fr; }
-
-    /* ════════════════════════════════
-       HERO
-    ════════════════════════════════ */
+    /* ══ HERO ══ */
     .hero {
-      padding: 88px 48px 64px;
-      max-width: 1160px; margin: 0 auto;
+      padding: 80px 48px 60px;
+      max-width: 1100px; margin: 0 auto;
       position: relative; overflow: hidden;
     }
     .hero::before {
-      content: '';
-      position: absolute; top: -300px; right: -300px;
-      width: 800px; height: 800px;
-      background: radial-gradient(circle, rgba(0,220,255,0.035) 0%, transparent 65%);
+      content: ''; position: absolute;
+      top: -200px; right: -200px; width: 600px; height: 600px;
+      background: radial-gradient(circle, rgba(0,220,255,0.04) 0%, transparent 65%);
       pointer-events: none;
     }
     .hero-pill {
       display: inline-flex; align-items: center; gap: 8px;
       font-family: var(--mono); font-size: 11px;
-      color: var(--accent); border: 1px solid var(--border-strong);
-      background: var(--accent-dim); padding: 5px 14px;
-      border-radius: 100px; margin-bottom: 28px;
-      letter-spacing: 0.06em;
+      color: var(--yellow); border: 1px solid rgba(255,209,102,0.3);
+      background: rgba(255,209,102,0.06); padding: 5px 14px;
+      border-radius: 100px; margin-bottom: 26px; letter-spacing: 0.06em;
     }
     .hero-pill .blink {
-      width: 6px; height: 6px;
-      background: var(--accent); border-radius: 50%;
-      animation: blink 2.2s ease-in-out infinite;
+      width: 6px; height: 6px; background: var(--yellow);
+      border-radius: 50%; animation: blink 2.2s ease-in-out infinite;
     }
     @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
 
     h1.hero-title {
       font-family: var(--display);
-      font-size: clamp(40px, 6vw, 76px);
+      font-size: clamp(38px, 5.5vw, 70px);
       font-weight: 800; line-height: 1.03;
       letter-spacing: -0.035em; color: #EEF5FF;
-      margin-bottom: 28px;
+      margin-bottom: 22px;
     }
     h1.hero-title .hl { color: var(--accent); }
 
-    .hero-row {
-      display: flex; flex-wrap: wrap;
-      align-items: center; gap: 14px;
-      margin-bottom: 10px;
+    .hero-sub {
+      font-family: var(--sans); font-size: 17px;
+      color: var(--text-dim); max-width: 680px; line-height: 1.7;
+      margin-bottom: 28px;
     }
-    .conf-badge {
-      font-family: var(--mono); font-size: 11px; font-weight: 600;
-      background: linear-gradient(130deg, #7C3AED, #4338CA);
-      color: #fff; padding: 5px 13px;
-      border-radius: 3px; letter-spacing: 0.08em; text-transform: uppercase;
-    }
-    .authors {
-      font-family: var(--sans); font-size: 14px; color: var(--text-dim);
-    }
-    .authors a {
-      color: var(--text); text-decoration: none; transition: color 0.2s;
-    }
-    .authors a:hover { color: var(--accent); }
+    .hero-sub a { color: var(--accent); text-decoration: none; }
+    .hero-sub a:hover { text-decoration: underline; }
 
-    .affiliations {
-      font-size: 13px; color: var(--text-muted);
-      font-family: var(--sans); margin-bottom: 30px;
+    .hero-meta {
+      display: flex; flex-wrap: wrap; gap: 20px;
+      font-family: var(--mono); font-size: 12px; color: var(--text-muted);
+      margin-bottom: 32px;
     }
+    .hero-meta span { display: flex; align-items: center; gap: 6px; }
+    .hero-meta span::before { content: '—'; color: var(--border-strong); }
 
     .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-
     .btn {
       display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 22px;
-      font-family: var(--display); font-size: 13px; font-weight: 600;
-      text-decoration: none; border-radius: var(--radius);
-      transition: all 0.22s ease; letter-spacing: 0.01em;
+      padding: 10px 22px; font-family: var(--display);
+      font-size: 13px; font-weight: 600; text-decoration: none;
+      border-radius: var(--r); transition: all 0.22s; letter-spacing: 0.01em;
     }
-    .btn-fill {
-      background: var(--accent); color: var(--bg);
-      border: 1px solid var(--accent);
-    }
-    .btn-fill:hover { background: transparent; color: var(--accent); transform: translateY(-2px); }
-    .btn-ghost {
-      background: transparent; color: var(--text);
-      border: 1px solid var(--border-strong);
-    }
+    .btn-fill  { background: var(--accent); color: var(--bg); border: 1px solid var(--accent); }
+    .btn-fill:hover  { background: transparent; color: var(--accent); transform: translateY(-2px); }
+    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border-strong); }
     .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
 
-    /* ════════════════════════════════
-       TEASER VIDEOS
-    ════════════════════════════════ */
-    .vid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 28px 0; }
-    .vid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin: 0 0 6px; }
-
-    .vid-card {
-      border: 1px solid var(--border); border-radius: var(--radius);
-      overflow: hidden; transition: border-color 0.25s, transform 0.25s;
-    }
-    .vid-card:hover { border-color: var(--border-strong); transform: translateY(-3px); }
-    .vid-card video { width: 100%; display: block; }
-    .vid-label {
-      padding: 7px 12px;
-      font-family: var(--mono); font-size: 11px;
-      color: var(--text-muted); background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      letter-spacing: 0.04em;
-    }
-    .vid-label.hl { color: var(--accent); }
-
-    /* ════════════════════════════════
-       FULL-WIDTH IMAGE
-    ════════════════════════════════ */
-    .full-img {
-      width: 100%; display: block;
-      border: 1px solid var(--border); border-radius: var(--radius);
-      margin: 20px 0;
-    }
-
-    /* ════════════════════════════════
-       FEATURE LIST
-    ════════════════════════════════ */
-    .feat-list { list-style: none; display: flex; flex-direction: column; gap: 14px; margin: 18px 0; }
-    .feat-list li { display: flex; gap: 12px; font-size: 15px; color: var(--text-dim); line-height: 1.7; }
-    .feat-list li::before {
-      content: '→'; color: var(--accent);
-      font-family: var(--mono); font-size: 13px;
-      flex-shrink: 0; padding-top: 3px;
-    }
-    .feat-list b { color: var(--text); }
-
-    /* ════════════════════════════════
-       MATH BLOCKS
-    ════════════════════════════════ */
-    .math-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      padding: 18px 22px; border-radius: var(--radius);
-      margin: 16px 0; font-size: 15px;
-    }
-    .math-card p { font-size: 13px; color: var(--text-dim); margin-bottom: 6px; }
-    .math-card strong { color: var(--text); }
-
-    /* ════════════════════════════════
-       PROMPT CAPTION
-    ════════════════════════════════ */
-    .prompt-cap {
-      padding: 10px 16px;
-      font-family: var(--mono); font-size: 12px;
-      color: var(--text-dim); text-align: center;
-      border-top: 1px solid var(--border);
-      background: var(--surface);
-    }
-    .prompt-cap em { color: var(--text); font-style: normal; }
-
-    /* ════════════════════════════════
-       VIDEO ROW HEADER
-    ════════════════════════════════ */
-    .row-hdr { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-bottom: 5px; }
-    .row-hdr span {
-      font-family: var(--mono); font-size: 11px;
-      color: var(--text-muted); letter-spacing: 0.04em; text-align: center;
-    }
-    .row-hdr span.hl { color: var(--accent); font-weight: 600; }
-
-    /* ════════════════════════════════
-       CV PROJECT SECTION
-    ════════════════════════════════ */
-    #cv-project {
-      background: linear-gradient(180deg, rgba(0,220,255,0.015) 0%, transparent 300px);
-    }
-
-    .gold-pill {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--mono); font-size: 11px;
-      color: var(--yellow); border: 1px solid rgba(255,209,102,0.3);
-      background: var(--yellow-dim); padding: 5px 14px;
-      border-radius: 100px; letter-spacing: 0.06em;
-    }
-
-    /* ── BENTO METRICS ── */
+    /* ══ BENTO METRICS ══ */
     .bento {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
+      display: grid; grid-template-columns: repeat(4, 1fr);
       gap: 12px; margin: 36px 0;
     }
     .m-card {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 22px 18px;
+      border-radius: var(--r); padding: 22px 18px;
       position: relative; overflow: hidden;
       transition: border-color 0.25s, transform 0.25s;
     }
@@ -361,7 +201,6 @@
     .m-card.g::before { background: var(--green); }
     .m-card.r::before { background: var(--red); }
     .m-card.y::before { background: var(--yellow); }
-    .m-card.b::before { background: var(--accent); }
     .m-card:hover { border-color: var(--border-strong); transform: translateY(-3px); }
     .m-num {
       font-family: var(--mono); font-size: 42px; font-weight: 600;
@@ -370,484 +209,227 @@
     .m-card.g .m-num { color: var(--green); }
     .m-card.r .m-num { color: var(--red); }
     .m-card.y .m-num { color: var(--yellow); }
-    .m-card.b .m-num { color: var(--accent); }
-    .m-title {
-      font-family: var(--display); font-size: 12px; font-weight: 700;
-      color: var(--text); margin-bottom: 4px;
-    }
-    .m-sub { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+    .m-title { font-family: var(--display); font-size: 12px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .m-sub   { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
 
-    /* ── RESULT CARDS ── */
-    .r-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 22px 0; }
+    /* ══ RESULT CARDS ══ */
+    .r-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 20px 0; }
 
     .r-card {
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); overflow: hidden;
+      border-radius: var(--r); overflow: hidden;
       transition: border-color 0.25s, transform 0.25s;
     }
     .r-card:hover { border-color: var(--border-strong); transform: translateY(-3px); }
     .r-card.str  { border-left: 3px solid var(--green); }
-    .r-card.lim  { border-left: 3px solid var(--red);   }
     .r-card.warn { border-left: 3px solid var(--yellow); }
+    .r-card.lim  { border-left: 3px solid var(--red); }
 
     .r-head {
       display: flex; align-items: center; gap: 10px;
-      padding: 14px 18px;
-      border-bottom: 1px solid var(--border);
+      padding: 13px 18px; border-bottom: 1px solid var(--border);
     }
     .r-head .r-title { font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--text); }
-    .r-head .r-val { margin-left: auto; font-family: var(--mono); font-size: 13px; }
-    .r-card.str  .r-head .r-val { color: var(--green); }
-    .r-card.lim  .r-head .r-val { color: var(--red);   }
-    .r-card.warn .r-head .r-val { color: var(--yellow); }
+    .r-head .r-val   { margin-left: auto; font-family: var(--mono); font-size: 13px; }
+    .r-card.str  .r-val { color: var(--green); }
+    .r-card.warn .r-val { color: var(--yellow); }
+    .r-card.lim  .r-val { color: var(--red); }
 
-    .r-body { padding: 16px 18px; }
+    .r-body { padding: 15px 18px; }
     .r-body p { font-size: 14px; color: var(--text-dim); line-height: 1.65; }
     .r-card img { width: 100%; display: block; }
 
     /* image overlay pair */
-    .img-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+    .img-pair { display: grid; grid-template-columns: 1fr 1fr; }
     .img-slot { position: relative; }
     .img-slot img { width: 100%; display: block; }
     .img-slot .tag {
       position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 5px 10px; background: rgba(6,9,15,0.78);
+      padding: 5px 8px; background: rgba(6,9,15,0.8);
       font-family: var(--mono); font-size: 11px; text-align: center;
     }
 
-    /* ── MECHANISM BOX ── */
-    .mech {
-      border-radius: var(--radius); padding: 14px 18px; margin-top: 14px;
-      border: 1px solid;
-    }
-    .mech.g { background: var(--green-dim);  border-color: rgba(0,255,163,0.2); }
-    .mech.r { background: var(--red-dim);    border-color: rgba(255,77,109,0.22); }
-    .mech.y { background: var(--yellow-dim); border-color: rgba(255,209,102,0.22); }
-
-    .mech-lbl {
-      font-family: var(--mono); font-size: 10px; font-weight: 600;
-      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 7px;
-    }
-    .mech.g .mech-lbl { color: var(--green); }
-    .mech.r .mech-lbl { color: var(--red); }
-    .mech.y .mech-lbl { color: var(--yellow); }
-
-    .mech p { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
-
-    /* ── FULL-WIDTH LIMIT CARD ── */
+    /* ══ FULL-WIDTH LIMIT CARD ══ */
     .lim-full {
       background: var(--surface); border: 1px solid var(--border);
-      border-left: 3px solid var(--red); border-radius: var(--radius);
+      border-left: 3px solid var(--red); border-radius: var(--r);
       overflow: hidden; margin: 18px 0;
     }
     .lim-full-head {
       display: flex; align-items: center; gap: 10px;
-      padding: 14px 20px; border-bottom: 1px solid var(--border);
+      padding: 13px 20px; border-bottom: 1px solid var(--border);
       background: rgba(255,77,109,0.04);
     }
     .lim-full-head .t { font-family: var(--display); font-size: 14px; font-weight: 700; color: var(--text); }
     .lim-full-head .v { margin-left: auto; font-family: var(--mono); font-size: 13px; color: var(--red); }
     .lim-full-body { padding: 20px; }
 
-    /* ── INFO NOTE ── */
+    /* ══ MECH BOX ══ */
+    .mech { border-radius: var(--r); padding: 13px 16px; margin-top: 13px; border: 1px solid; }
+    .mech.g { background: var(--green-dim);  border-color: rgba(0,255,163,0.18); }
+    .mech.r { background: var(--red-dim);    border-color: rgba(255,77,109,0.2); }
+    .mech.y { background: var(--yellow-dim); border-color: rgba(255,209,102,0.2); }
+    .mech-lbl {
+      font-family: var(--mono); font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 6px;
+    }
+    .mech.g .mech-lbl { color: var(--green); }
+    .mech.r .mech-lbl { color: var(--red); }
+    .mech.y .mech-lbl { color: var(--yellow); }
+    .mech p { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
+
+    /* ══ NOTE ══ */
     .note {
       display: flex; gap: 12px; align-items: flex-start;
       background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 14px 18px; margin: -8px 0 30px;
+      border-radius: var(--r); padding: 13px 17px; margin: 0 0 28px;
     }
-    .note .ico { font-size: 16px; flex-shrink: 0; padding-top: 1px; }
     .note p { font-size: 14px; color: var(--text-dim); line-height: 1.65; }
 
-    /* ════════════════════════════════
-       TABLES
-    ════════════════════════════════ */
-    .tbl-wrap { overflow-x: auto; border-radius: var(--radius); border: 1px solid var(--border); }
-
+    /* ══ TABLES ══ */
+    .tbl-wrap { overflow-x: auto; border-radius: var(--r); border: 1px solid var(--border); }
     table { width: 100%; border-collapse: collapse; }
-
     thead { background: var(--surface-2); }
     thead th {
-      padding: 11px 16px; text-align: left;
+      padding: 11px 15px; text-align: left;
       font-family: var(--mono); font-size: 10px; font-weight: 600;
       letter-spacing: 0.1em; text-transform: uppercase;
       color: var(--accent); border-bottom: 1px solid var(--border);
       white-space: nowrap;
     }
-
     tbody tr { border-bottom: 1px solid rgba(255,255,255,0.035); transition: background 0.2s; }
     tbody tr:hover { background: rgba(0,220,255,0.04); }
     tbody tr:last-child { border-bottom: none; }
-
     tbody td {
-      padding: 11px 16px; font-family: var(--mono); font-size: 13px;
-      color: var(--text-dim); vertical-align: middle;
+      padding: 11px 15px; font-family: var(--mono);
+      font-size: 13px; color: var(--text-dim); vertical-align: middle;
     }
-
     tr.opt { background: rgba(0,255,163,0.05); }
     tr.opt td:first-child { color: var(--green); font-weight: 600; }
     tr.bad { background: rgba(255,77,109,0.04); }
     tr.bad td:first-child { color: var(--red); }
     tr.wrn { background: rgba(255,209,102,0.04); }
     tr.wrn td:first-child { color: var(--yellow); }
-
     .n  { color: var(--text); }
     .ng { color: var(--green); font-weight: 600; }
     .nr { color: var(--red); }
     .nd { color: var(--text-dim); }
-    .note-td { font-size: 11px !important; }
+    .sm { font-size: 11px !important; }
 
-    /* ════════════════════════════════
-       RESOURCES
-    ════════════════════════════════ */
-    .res-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0; }
-
+    /* ══ RESOURCES ══ */
+    .res-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 20px 0; }
     .res-link {
       display: flex; align-items: center; gap: 14px;
-      padding: 16px 18px; background: var(--surface);
-      border: 1px solid var(--border); border-radius: var(--radius);
-      text-decoration: none; color: var(--text);
-      transition: all 0.22s;
+      padding: 15px 17px; background: var(--surface);
+      border: 1px solid var(--border); border-radius: var(--r);
+      text-decoration: none; color: var(--text); transition: all 0.22s;
     }
     .res-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-    .res-link .ico { font-size: 22px; flex-shrink: 0; }
-    .res-link .r-lbl { font-family: var(--display); font-size: 13px; font-weight: 700; }
+    .res-link .ico  { font-size: 20px; flex-shrink: 0; }
+    .res-link .r-lbl  { font-family: var(--display); font-size: 13px; font-weight: 700; }
     .res-link .r-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
 
-    /* ════════════════════════════════
-       BIBTEX
-    ════════════════════════════════ */
-    .bib {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 24px 28px;
-      font-family: var(--mono); font-size: 13px;
-      line-height: 1.85; color: var(--text-dim); overflow-x: auto;
+    /* ══ FULL IMAGE ══ */
+    .full-img {
+      width: 100%; display: block;
+      border: 1px solid var(--border); border-radius: var(--r); margin: 16px 0;
     }
 
-    /* ════════════════════════════════
-       FOOTER
-    ════════════════════════════════ */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 32px 48px; text-align: center;
-      font-family: var(--mono); font-size: 12px;
-      color: var(--text-muted);
-    }
-    footer p + p { margin-top: 6px; }
-
-    /* ════════════════════════════════
-       INLINE CODE
-    ════════════════════════════════ */
+    /* ══ INLINE CODE ══ */
     code {
       font-family: var(--mono); font-size: 12px;
       background: rgba(0,220,255,0.09); color: var(--accent);
       padding: 2px 6px; border-radius: 3px;
     }
 
-    strong.g { color: var(--green); }
-    strong.r { color: var(--red); }
-    strong.a { color: var(--accent); }
-    strong.y { color: var(--yellow); }
+    /* ══ FOOTER ══ */
+    footer {
+      border-top: 1px solid var(--border); padding: 28px 48px;
+      text-align: center; font-family: var(--mono);
+      font-size: 12px; color: var(--text-muted);
+    }
+    footer p + p { margin-top: 6px; }
 
-    /* ════════════════════════════════
-       RESPONSIVE
-    ════════════════════════════════ */
+    /* ══ RESPONSIVE ══ */
     @media (max-width: 860px) {
-      nav { padding: 12px 20px; }
+      nav, .hero { padding-left: 20px; padding-right: 20px; }
+      .wrap { padding-left: 20px; padding-right: 20px; }
       .nav-links { display: none; }
-      .wrap, .hero { padding-left: 20px; padding-right: 20px; }
-      h1.hero-title { font-size: 34px; }
+      h1.hero-title { font-size: 36px; }
       .bento { grid-template-columns: 1fr 1fr; }
       .r-grid { grid-template-columns: 1fr; }
-      .vid-2, .vid-3 { grid-template-columns: 1fr; }
-      .split, .split.lean-left, .split.lean-right { grid-template-columns: 1fr; }
       .res-grid { grid-template-columns: 1fr; }
-      .row-hdr { grid-template-columns: 1fr; display: none; }
     }
   </style>
 </head>
 
 <body>
-
-  <!-- Custom cursor -->
   <div id="cur-dot"></div>
   <div id="cur-ring"></div>
 
-  <!-- ══════════════════════════════════════
-       NAV
-  ══════════════════════════════════════ -->
+  <!-- ══ NAV ══ -->
   <nav>
-    <a href="#" class="nav-logo">DiffTrack</a>
+    <a href="#" class="nav-logo">DiffTrack · Study</a>
     <ul class="nav-links">
-      <li><a href="#overview">Overview</a></li>
-      <li><a href="#tracking">Tracking</a></li>
-      <li><a href="#method">Method</a></li>
-      <li><a href="#cv-project">Student Study</a></li>
-      <li><a href="#bibtex">Cite</a></li>
+      <li><a href="#strengths">Strengths</a></li>
+      <li><a href="#limitations">Limitations</a></li>
+      <li><a href="#results">Results</a></li>
+      <li><a href="#lineage">Lineage</a></li>
+      <li><a href="#resources">Resources</a></li>
     </ul>
   </nav>
 
-  <!-- ══════════════════════════════════════
-       HERO
-  ══════════════════════════════════════ -->
+  <!-- ══ HERO ══ -->
   <div class="hero">
     <div class="hero-pill">
       <span class="blink"></span>
-      NeurIPS 2025 &nbsp;·&nbsp; Video Diffusion Transformers &nbsp;·&nbsp; Zero-Shot Tracking
+      CV Final Project · Sohum Damani · 2026
     </div>
 
     <h1 class="hero-title">
-      Emergent <span class="hl">Temporal</span><br>
-      Correspondences from<br>
-      Video Diffusion Transformers
+      Reproduction &amp;<br>
+      <span class="hl">Ablation Study</span>
     </h1>
 
-    <div class="hero-row">
-      <span class="conf-badge">NeurIPS 2025</span>
-      <span class="authors">
-        <a href="https://scholar.google.com/citations?hl=&user=xakYe8MAAAAJ">Jisu Nam*</a>,&thinsp;
-        <a href="https://scholar.google.com/citations?hl=&user=Eo87mRsAAAAJ">Soowon Son*</a>,&thinsp;
-        <a href="https://scholar.google.com/citations?hl=&user=EU52riMAAAAJ">Dahyun Chung</a>,&thinsp;
-        <a href="https://scholar.google.co.kr/citations?hl=&user=DqG-ybIAAAAJ">Jiyoung Kim</a>,&thinsp;
-        <a href="https://scholar.google.com/citations?hl=&user=rXRHxkwAAAAJ">Siyoon Jin</a>,&thinsp;
-        <a href="https://scholar.google.com/citations?hl=&user=z4dNJdkAAAAJ">Junhwa Hur†</a>,&thinsp;
-        <a href="https://scholar.google.com/citations?hl=&user=cIK1hS8AAAAJ">Seungryong Kim†</a>
-      </span>
-    </div>
-
-    <p class="affiliations">
-      <sup>1</sup>&nbsp;KAIST AI &emsp;
-      <sup>2</sup>&nbsp;Korea University &emsp;
-      <sup>3</sup>&nbsp;Google DeepMind &emsp;
-      *&thinsp;Equal contribution &emsp; †&thinsp;Co-corresponding
+    <p class="hero-sub">
+      Reproducing and stress-testing
+      <a href="https://arxiv.org/abs/2506.17220" target="_blank">DiffTrack (NeurIPS 2025)</a>
+      — zero-shot point tracking via emergent query-key correspondences in a frozen
+      CogVideoX-2B Video DiT. 13 experiments on TAP-Vid DAVIS. All results code-verified.
     </p>
 
+    <div class="hero-meta">
+      <span>CogVideoX-2B</span>
+      <span>TAP-Vid DAVIS</span>
+      <span>13 Experiments</span>
+      <span>Zero-Shot Tracking</span>
+    </div>
+
     <div class="hero-btns">
-      <a href="https://arxiv.org/abs/2506.17220" target="_blank" class="btn btn-fill">
-        <i class="ai ai-arxiv"></i> arXiv Paper
+      <a href="https://github.com/SohumDamani/DiffTrack-CvProject" target="_blank" class="btn btn-fill">
+        <i class="fab fa-github"></i> GitHub Repo
       </a>
-      <a href="https://github.com/cvlab-kaist/DiffTrack" target="_blank" class="btn btn-ghost">
-        <i class="fab fa-github"></i> Official Code
+      <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="btn btn-ghost">
+        🎬 Tracking Videos (111 MP4s)
       </a>
-      <a href="#cv-project" class="btn btn-ghost">🎓 Student Study ↓</a>
+      <a href="https://arxiv.org/abs/2506.17220" target="_blank" class="btn btn-ghost">
+        <i class="ai ai-arxiv"></i> Original Paper
+      </a>
     </div>
   </div>
 
   <hr class="div">
 
-  <!-- ══════════════════════════════════════
-       01 OVERVIEW
-  ══════════════════════════════════════ -->
-  <div class="section-pad" id="overview">
+  <!-- ══ BENTO METRICS ══ -->
+  <div class="pad">
     <div class="wrap">
-      <div class="lbl">01 — Overview</div>
-      <h2 class="sec-title">Zero-Shot Point Tracking from<br>Frozen Video DiTs</h2>
-
-      <div class="split lean-left" style="margin-bottom: 36px;">
-        <div>
-          <p class="body-text" style="margin-bottom: 20px;">
-            DiffTrack reveals how Video Diffusion Transformers (DiTs) establish temporal correspondences during
-            video generation. Given starting points in the first frame, DiffTrack tracks how individual points
-            move across subsequent frames — entirely <strong style="color:var(--text);">zero-shot, no fine-tuning required</strong>.
-          </p>
-          <p class="body-text">
-            <strong class="a">TL;DR:</strong> Generated videos by video diffusion transformer (DiT) with emergent temporal correspondence.
-            DiffTrack enables both zero-shot point tracking and motion-enhanced video generation via a novel CAG guidance method.
-          </p>
-          <ul class="feat-list" style="margin-top: 22px;">
-            <li><span><b>Zero-shot point tracking</b> — no training on video data. State-of-the-art on TAP-Vid.</span></li>
-            <li><span><b>Motion-enhanced generation</b> — CAG leverages temporal attention to increase motion.</span></li>
-            <li><span><b>Beats DINOv2 &amp; VFS</b> — outperforms vision foundation models on DAVIS and Kinetics.</span></li>
-          </ul>
-        </div>
-        <div>
-          <img src="static/images/analysis_5b.png" class="full-img" alt="Analysis CogVideoX-5B" style="margin-top:0;">
-        </div>
-      </div>
-
-      <!-- Teaser videos -->
-      <div class="vid-2">
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/teaser/fg_2.mp4" type="video/mp4"></video></div>
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/teaser/bg1.mp4" type="video/mp4"></video></div>
-      </div>
-
-      <ul class="feat-list" style="margin-top: 28px;">
-        <li><span><b>Representation selection:</b> Query-key matching achieves higher accuracy than intermediate feature matching.</span></li>
-        <li><span><b>Layer-wise analysis:</b> Temporal correspondence is governed by a limited set of mid-network layers.</span></li>
-        <li><span><b>Noise-level analysis:</b> Matching improves as noise decreases; later timesteps shift toward cross-frame attention.</span></li>
-      </ul>
-    </div>
-  </div>
-
-  <hr class="div">
-
-  <!-- ══════════════════════════════════════
-       02 TRACKING
-  ══════════════════════════════════════ -->
-  <div class="section-pad" id="tracking">
-    <div class="wrap">
-      <div class="lbl">02 — Zero-Shot Tracking</div>
-      <h2 class="sec-title">Outperforming Vision Foundation<br>Models Without Training</h2>
-
-      <img src="static/images/main_quan.png" class="full-img" alt="Quantitative comparison">
-
-      <p class="body-text" style="margin-bottom: 36px;">
-        Video DiTs combined with DiffTrack outperform all vision foundation models trained on single images
-        and self-supervised models trained on two-view images or videos for zero-shot point tracking on TAP-Vid DAVIS &amp; Kinetics.
-      </p>
-
-      <div class="row-hdr">
-        <span>DINOv2</span>
-        <span>VFS</span>
-        <span class="hl">DiffTrack (CogVideoX-5B)</span>
-      </div>
-      <div class="vid-3">
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/tracking/dino_006.mp4" type="video/mp4"></video></div>
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/tracking/vfs_006.mp4" type="video/mp4"></video></div>
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/tracking/cog_006.mp4" type="video/mp4"></video></div>
-      </div>
-      <div class="vid-3">
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/tracking/dino_021.mp4" type="video/mp4"></video></div>
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/tracking/vfs_021.mp4" type="video/mp4"></video></div>
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/tracking/cog_021.mp4" type="video/mp4"></video></div>
-      </div>
-      <div class="vid-3">
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/tracking/dino_017.mp4" type="video/mp4"></video></div>
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/tracking/vfs_017.mp4" type="video/mp4"></video></div>
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/tracking/cog_017.mp4" type="video/mp4"></video></div>
-      </div>
-      <div class="vid-3" style="margin-bottom:20px;">
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/tracking/dino_027.mp4" type="video/mp4"></video></div>
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/tracking/vfs_027.mp4" type="video/mp4"></video></div>
-        <div class="vid-card"><video autoplay muted loop playsinline><source src="static/videos/tracking/cog_027.mp4" type="video/mp4"></video></div>
-      </div>
+      <div class="lbl">Key Results</div>
+      <h2 class="sec-title">2 Strengths · 3 Paper-Grounded Limitations</h2>
       <p class="body-text">
-        DiffTrack on CogVideoX-5B produces smoother and more accurate trajectories compared to DINOv2 and VFS,
-        which struggle with temporal dynamics and often yield inconsistent tracks.
+        All delta_avg values verified against raw log files. delta_avg = average % of predictions
+        within {1,2,4,8,16}px thresholds — higher is always better.
       </p>
 
-      <!-- Motion Enhancement -->
-      <div style="margin-top: 64px;">
-        <div class="lbl">02b — Motion Enhancement</div>
-        <h3 style="font-family:var(--display);font-size:clamp(22px,3vw,34px);font-weight:800;letter-spacing:-0.025em;color:#EAF2FA;margin-bottom:20px;">
-          CAG: Cross-Attention Guidance
-        </h3>
-        <p class="body-text" style="margin-bottom: 28px;">
-          CAG steers generation toward motion-enhanced videos using the same cross-frame temporal attention mechanism that DiffTrack exploits for tracking.
-        </p>
-
-        <div class="vid-2">
-          <div class="vid-card">
-            <div class="vid-label">CogVideoX-5B (baseline)</div>
-            <video autoplay muted loop playsinline><source src="static/videos/motion/004.mp4" type="video/mp4"></video>
-          </div>
-          <div class="vid-card">
-            <div class="vid-label hl">Motion Enhanced</div>
-            <video autoplay muted loop playsinline><source src="static/videos/motion/video_4.mp4" type="video/mp4"></video>
-          </div>
-        </div>
-        <div class="prompt-cap"><em>"He takes a slow, appreciative sip, his eyes closing momentarily as he savors the complex flavors."</em></div>
-
-        <div class="vid-2" style="margin-top:16px;">
-          <div class="vid-card">
-            <div class="vid-label">CogVideoX-5B (baseline)</div>
-            <video autoplay muted loop playsinline><source src="static/videos/motion/087.mp4" type="video/mp4"></video>
-          </div>
-          <div class="vid-card">
-            <div class="vid-label hl">Motion Enhanced</div>
-            <video autoplay muted loop playsinline><source src="static/videos/motion/video_87.mp4" type="video/mp4"></video>
-          </div>
-        </div>
-        <div class="prompt-cap"><em>"A determined individual ascends a thick, rugged rope hanging from a towering rock face."</em></div>
-
-        <div class="vid-2" style="margin-top:16px;">
-          <div class="vid-card">
-            <div class="vid-label">CogVideoX-5B (baseline)</div>
-            <video autoplay muted loop playsinline><source src="static/videos/motion/015.mp4" type="video/mp4"></video>
-          </div>
-          <div class="vid-card">
-            <div class="vid-label hl">Motion Enhanced</div>
-            <video autoplay muted loop playsinline><source src="static/videos/motion/video_15.mp4" type="video/mp4"></video>
-          </div>
-        </div>
-        <div class="prompt-cap"><em>"A motorcycle cruising along a coastal highway."</em></div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="div">
-
-  <!-- ══════════════════════════════════════
-       03 METHOD
-  ══════════════════════════════════════ -->
-  <div class="section-pad" id="method">
-    <div class="wrap">
-      <div class="lbl">03 — Method</div>
-      <h2 class="sec-title">Analysis Framework</h2>
-
-      <div class="split lean-left">
-        <div>
-          <h3 style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--text);margin-bottom:12px;">Evaluation Dataset Curation</h3>
-          <img src="static/images/dataset_example.png" class="full-img" style="margin-top:0;" alt="Dataset">
-          <p style="font-size:15px;color:var(--text-dim);margin-top:10px;line-height:1.7;">
-            Two distinct datasets: (a) <strong style="color:var(--text);">object</strong> dataset for dynamic object-centric videos,
-            (b) <strong style="color:var(--text);">scene</strong> dataset for static scenes with camera motion.
-            50 prompts each, 50 videos per prompt (CogVideoX-2B).
-            Pseudo ground-truth via <strong style="color:var(--text);">CoTracker</strong>.
-          </p>
-          <h3 style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--text);margin:28px 0 12px;">Evaluation Metrics</h3>
-          <ul class="feat-list">
-            <li><span><b>Matching Accuracy</b> — how precisely points are aligned across frames</span></li>
-            <li><span><b>Confidence Score</b> — how strongly each point attends to its match</span></li>
-            <li><span><b>Attention Score</b> — how strongly cross-frame interactions influence generation</span></li>
-          </ul>
-          <p style="font-size:14px;color:var(--text-dim);margin-top:12px;">
-            Combined via <strong style="color:var(--text);">harmonic mean</strong> — highlighting regions where all three metrics are simultaneously high.
-          </p>
-        </div>
-        <div>
-          <h3 style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--text);margin-bottom:16px;">Temporal Correspondence Estimation</h3>
-
-          <div class="math-card">
-            <p><strong>Matching Cost</strong> at timestep \(t\), layer \(l\):</p>
-            \[\mathbf{C}^{1,j}_{t,l} = \mathtt{Softmax}\!\left(\frac{\mathbf{D}_{t,l}^1(\mathbf{D}_{t,l}^j)^T}{\sqrt{d}}\right)\]
-          </div>
-          <div class="math-card">
-            <p><strong>Correspondence Estimation</strong>:</p>
-            \[\mathbf{p}^j_{t,l} = \underset{\mathbf{x}\in\Omega}{\mathtt{Argmax}}\ \mathbf{C}^{1,j}_{t,l}(\mathbf{p}^1,\mathbf{x})\]
-          </div>
-          <div class="math-card">
-            <p><strong>Trajectory Reconstruction</strong>:</p>
-            \[\hat{\mathbf{T}}_{t,l} = \mathtt{Interp}\!\left(\mathtt{Concat}(\mathbf{p}^1, \mathbf{p}^2_{t,l},\ldots,\mathbf{p}^{1+f}_{t,l})\right)\]
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <hr class="div">
-
-  <!-- ══════════════════════════════════════
-       CV FINAL PROJECT
-  ══════════════════════════════════════ -->
-  <div class="section-pad" id="cv-project">
-    <div class="wrap">
-
-      <!-- Header -->
-      <div style="margin-bottom:10px;">
-        <span class="gold-pill">⬛ Student Reproduction Study · Sohum Damani · 2026</span>
-      </div>
-      <h2 class="sec-title" style="margin-top:16px;">Reproduction &amp; Ablation Study</h2>
-      <p class="body-text" style="margin-bottom:6px;">
-        CogVideoX-2B · TAP-Vid DAVIS · 13 experiments · results code-verified against raw logs
-      </p>
-      <p style="font-size:14px;color:var(--text-muted);margin-bottom:0;">
-        All logs committed to
-        <a href="https://github.com/SohumDamani/DiffTrack-CvProject" target="_blank" style="color:var(--accent);text-decoration:none;">GitHub</a>.
-        Tracking videos on
-        <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" style="color:var(--accent);text-decoration:none;">Google Drive (~111 MP4s)</a>.
-      </p>
-
-      <!-- METRICS BENTO -->
       <div class="bento">
         <div class="m-card g">
           <div class="m-num">47.0</div>
@@ -857,7 +439,7 @@
         <div class="m-card r">
           <div class="m-num">0.0</div>
           <div class="m-title">ts=1 Failure</div>
-          <div class="m-sub">All 4 videos · all metrics · exactly zero</div>
+          <div class="m-sub">All 4 videos · all 6 metrics · exactly zero</div>
         </div>
         <div class="m-card y">
           <div class="m-num">41.9</div>
@@ -870,9 +452,16 @@
           <div class="m-sub">Diffuse attention (Fig A.18) · −18% vs optimal</div>
         </div>
       </div>
+    </div>
+  </div>
 
-      <!-- STRENGTHS -->
-      <div class="lbl" style="margin-top:48px;">Strengths Confirmed</div>
+  <hr class="div">
+
+  <!-- ══ STRENGTHS ══ -->
+  <div class="pad" id="strengths">
+    <div class="wrap">
+      <div class="lbl">Strengths Confirmed</div>
+      <h2 class="sec-title">What the Paper Gets Right</h2>
 
       <div class="r-grid">
         <!-- Strength 1 -->
@@ -884,23 +473,24 @@
           </div>
           <div class="img-pair">
             <div class="img-slot">
-              <img src="static/images/student_track_good.png" alt="Tracking works at ts=49">
-              <div class="tag" style="color:var(--green);">ts=49 (paper's t=1) · delta_avg = 47.0 ✅</div>
+              <img src="static/images/student_track_good.png" alt="ts=49 tracking">
+              <div class="tag" style="color:var(--green);">ts=49 · delta_avg = 47.0 ✅</div>
             </div>
             <div class="img-slot">
               <img src="static/images/student_track_ts30.png" alt="ts=30 plateau">
-              <div class="tag" style="color:var(--accent);">ts=30 — also in effective plateau · 47.8</div>
+              <div class="tag" style="color:var(--accent);">ts=30 · also in plateau · 47.8</div>
             </div>
           </div>
           <div class="r-body">
             <p>Layer=17, ts=49 (paper's t=1) on 2 TAP-Vid DAVIS videos. Colored trajectory lines follow real object motion zero-shot — no training required. ts=30 and ts=49 both sit in the 47–48 effective plateau.</p>
             <div class="mech g">
               <div class="mech-lbl">Result</div>
-              <p>delta_avg = <strong class="g">47.0</strong> vs paper's 46.3 on full 30-video DAVIS set — within 1.5%. Method faithfully reproduced.</p>
+              <p>delta_avg = <strong style="color:var(--green);">47.0</strong> vs paper's 46.3 on full 30-video DAVIS — within 1.5%. Method faithfully reproduced.</p>
             </div>
-            <div style="margin-top:12px;padding:10px 14px;background:var(--accent-dim);border:1px solid var(--border-strong);border-radius:var(--radius);font-size:13px;color:var(--text-dim);">
-              <strong style="color:var(--accent);">▶ What to look for:</strong> Colored trajectory lines following object motion across frames.
-              <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" style="color:var(--accent);text-decoration:none;margin-left:8px;">Watch full tracking videos on Drive →</a>
+            <div style="margin-top:12px;padding:10px 13px;background:var(--accent-dim);border:1px solid var(--border-strong);border-radius:var(--r);font-size:13px;color:var(--text-dim);">
+              <strong style="color:var(--accent);">▶ What to look for:</strong> Colored trajectory lines following object motion.
+              <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank"
+                 style="color:var(--accent);text-decoration:none;margin-left:8px;">Watch full tracking videos on Drive →</a>
             </div>
           </div>
         </div>
@@ -917,7 +507,7 @@
             <p>Full 6-point ablation (ts=1,5,10,20,30,49) traces the shape of paper Figure 4(c). Stable plateau at ts=30–49, sharp failure cliff below ts=10.</p>
             <div class="mech g">
               <div class="mech-lbl">Key Finding</div>
-              <p>The paper's recommended <strong class="g">ts=49 (t=1)</strong> is confirmed as the correct operating point. ts=30 sits in the same effective plateau — within small-sample noise.</p>
+              <p>The paper's recommended <strong style="color:var(--green);">ts=49 (paper's t=1)</strong> is confirmed as the correct operating point. ts=30 sits in the same effective plateau — within small-sample noise.</p>
             </div>
           </div>
         </div>
@@ -925,18 +515,25 @@
 
       <!-- Plateau note -->
       <div class="note">
-        <span class="ico">💡</span>
+        <span style="font-size:16px;flex-shrink:0;padding-top:1px;">💡</span>
         <p>
           <strong style="color:var(--text);">ts=30 vs ts=49:</strong>
           Both produce delta_avg 47–48 on 2–4 videos — within small-sample noise. The 0.8-point difference does not indicate ts=30 is "better."
           The paper's ts=49 recommendation stands and is confirmed here.
         </p>
       </div>
+    </div>
+  </div>
 
-      <!-- LIMITATIONS -->
+  <hr class="div">
+
+  <!-- ══ LIMITATIONS ══ -->
+  <div class="pad" id="limitations">
+    <div class="wrap">
       <div class="lbl">Paper-Grounded Limitations Confirmed</div>
+      <h2 class="sec-title">Where the Method Breaks Down</h2>
 
-      <!-- Limit 1 full-width -->
+      <!-- Limitation 1 — full width -->
       <div class="lim-full">
         <div class="lim-full-head">
           <span>⚠️</span>
@@ -947,27 +544,30 @@
           <div class="r-grid" style="margin:0 0 16px;">
             <div>
               <img src="static/images/student_track_good.png"
-                   style="width:100%;border-radius:var(--radius);border:1px solid rgba(0,255,163,0.2);" alt="ts=49 tracking">
+                   style="width:100%;border-radius:var(--r);border:1px solid rgba(0,255,163,0.2);" alt="ts=49 working">
               <p style="font-family:var(--mono);font-size:11px;color:var(--green);margin-top:8px;text-align:center;">ts=49 (paper t=1) · delta_avg = 47.0 ✅</p>
             </div>
             <div>
               <img src="static/images/student_track_fail.png"
-                   style="width:100%;border-radius:var(--radius);border:1px solid rgba(255,77,109,0.25);" alt="ts=1 failure">
+                   style="width:100%;border-radius:var(--r);border:1px solid rgba(255,77,109,0.25);" alt="ts=1 failure">
               <p style="font-family:var(--mono);font-size:11px;color:var(--red);margin-top:8px;text-align:center;">ts=1 (scheduler t=980) · delta_avg = 0.00 ❌</p>
             </div>
           </div>
           <div class="mech r">
             <div class="mech-lbl">Mechanism (code-verified)</div>
-            <p>Our experiments omit <code>--do_inversion</code>. The pipeline encodes video to <strong style="color:var(--text);">clean VAE latents</strong>, then runs the transformer conditioned at
-            <strong class="r">t=980</strong> (scheduler noise scale — near-maximum noise). The model was trained to process heavily-noisy latents at t=980; receiving clean latents creates a
-            <strong style="color:var(--text);">distribution mismatch</strong> that destroys all correspondence features. Confirmed by paper Figure 4(c) and Section 4. Effective operating range: ts=30–49 only.</p>
+            <p>
+              Our experiments omit <code>--do_inversion</code>. The pipeline encodes video to <strong style="color:var(--text);">clean VAE latents</strong>,
+              then runs the transformer conditioned at <strong style="color:var(--red);">t=980</strong> (scheduler noise scale — near-maximum noise).
+              The model was trained to process heavily-noisy latents at t=980; receiving clean latents creates a
+              <strong style="color:var(--text);">distribution mismatch</strong> that destroys all correspondence features.
+              Confirmed by paper Figure 4(c) and Section 4. Effective operating range: ts=30–49 only.
+            </p>
           </div>
         </div>
       </div>
 
-      <!-- Limits 2 + 3 side-by-side -->
+      <!-- Limitations 2 + 3 -->
       <div class="r-grid">
-        <!-- Limitation 2 -->
         <div class="r-card warn">
           <div class="r-head">
             <span>⚠️</span>
@@ -987,12 +587,11 @@
           <div class="r-body">
             <div class="mech y">
               <div class="mech-lbl">Paper: Figure 6</div>
-              <p>RoPE positional embeddings dominate in layer 8. The model matches <em>the same spatial location</em> across frames rather than the actual object. −10% deficit confirmed quantitatively.</p>
+              <p>RoPE positional embeddings dominate in layer 8. The model matches <em>the same spatial location</em> rather than the actual object. −10% deficit confirmed quantitatively.</p>
             </div>
           </div>
         </div>
 
-        <!-- Limitation 3 -->
         <div class="r-card warn">
           <div class="r-head">
             <span>⚠️</span>
@@ -1017,157 +616,314 @@
           </div>
         </div>
       </div>
-
-      <!-- ── FULL ABLATION TABLES ── -->
-      <div style="margin-top:56px;">
-        <div class="lbl">Full Ablation Results</div>
-
-        <h3 style="font-family:var(--display);font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin:12px 0 16px;">
-          Timestep Ablation &mdash; Layer=17 · CogVideoX-2B · TAP-Vid DAVIS
-        </h3>
-        <div class="tbl-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Code ts</th><th>Paper t</th><th>Noise Scale</th>
-                <th>Videos</th><th>delta_avg ↑</th>
-                <th>delta_1</th><th>delta_8</th><th>delta_16</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="bad">
-                <td>ts=1</td><td class="nd">t≈49</td><td class="n">980</td><td class="nd">4</td>
-                <td class="nr">0.0</td><td class="nd">0.0</td><td class="nd">0.0</td><td class="nd">0.0</td>
-              </tr>
-              <tr class="bad">
-                <td>ts=5</td><td class="nd">t≈45</td><td class="n">900</td><td class="nd">4</td>
-                <td class="nr">0.8</td><td class="nd">0.0</td><td class="nd">0.4</td><td class="nd">3.5</td>
-              </tr>
-              <tr>
-                <td class="nd">ts=10</td><td class="nd">t≈40</td><td class="n">800</td><td class="nd">4</td>
-                <td class="n">13.1</td><td class="nd">0.1</td><td class="nd">17.6</td><td class="nd">41.9</td>
-              </tr>
-              <tr>
-                <td class="nd">ts=20</td><td class="nd">t≈30</td><td class="n">600</td><td class="nd">4</td>
-                <td class="n">33.4</td><td class="nd">1.5</td><td class="nd">52.3</td><td class="nd">82.6</td>
-              </tr>
-              <tr>
-                <td class="nd">ts=30</td><td class="nd">t=20</td><td class="n">400</td><td class="nd">4</td>
-                <td class="n">47.8</td><td class="nd">5.7</td><td class="nd">74.3</td><td class="nd">87.2</td>
-              </tr>
-              <tr class="opt">
-                <td>ts=49 ★</td><td class="nd">t=1</td><td class="n">20</td><td class="nd">2</td>
-                <td class="ng">47.0</td><td class="n">7.0</td><td class="n">74.6</td><td class="n">81.2</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h3 style="font-family:var(--display);font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin:40px 0 16px;">
-          Layer Ablation &mdash; ts=49 (paper's t=1) · CogVideoX-2B · TAP-Vid DAVIS
-        </h3>
-        <img src="static/images/student_layer_chart.png" class="full-img" alt="Layer ablation chart" style="margin-bottom:16px;">
-        <div class="tbl-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Layer</th><th>Position</th><th>Videos</th>
-                <th>delta_avg ↑</th><th>delta_1</th><th>delta_8</th><th>delta_16</th>
-                <th>Note</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td class="nd">l=5</td><td class="nd">Shallow</td><td class="nd">2</td>
-                <td class="n">31.3</td><td class="nd">0.8</td><td class="nd">51.7</td><td class="nd">73.8</td>
-                <td class="nd note-td">−33% vs baseline</td>
-              </tr>
-              <tr class="wrn">
-                <td>l=8</td><td class="nd">Early-mid</td><td class="nd">4</td>
-                <td class="n">41.9</td><td class="nd">2.9</td><td class="nd">68.0</td><td class="nd">84.3</td>
-                <td style="color:var(--yellow);" class="note-td">Positional bias (Fig 6) −10%</td>
-              </tr>
-              <tr class="opt">
-                <td>l=17 ★</td><td class="nd">Mid (optimal)</td><td class="nd">2</td>
-                <td class="ng">47.0</td><td class="n">7.0</td><td class="n">74.6</td><td class="n">81.2</td>
-                <td style="color:var(--green);" class="note-td">Paper default ✅</td>
-              </tr>
-              <tr>
-                <td class="nd">l=27</td><td class="nd">Deep</td><td class="nd">2</td>
-                <td class="n">37.0</td><td class="nd">3.7</td><td class="nd">57.5</td><td class="nd">73.8</td>
-                <td class="nd note-td">−21% vs baseline</td>
-              </tr>
-              <tr class="wrn">
-                <td>l=29</td><td class="nd">Near-final</td><td class="nd">4</td>
-                <td class="n">38.0</td><td class="nd">3.8</td><td class="nd">59.8</td><td class="nd">77.2</td>
-                <td style="color:var(--yellow);" class="note-td">Diffuse attn (Fig A.18) −18%</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <p style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:12px;line-height:1.7;">
-          All numbers verified against raw log files in <code>results/</code>.
-          delta_avg = avg % of predictions within {1,2,4,8,16}px (higher = better).
-          4-video no-chunk baseline at ts=49: 46.4. Paper reports 46.3 on 30 videos.
-        </p>
-      </div>
-
-      <!-- RESOURCES -->
-      <div style="margin-top:48px;">
-        <div class="lbl">Resources</div>
-        <div class="res-grid">
-          <a href="https://github.com/SohumDamani/DiffTrack-CvProject" target="_blank" class="res-link">
-            <span class="ico">📁</span>
-            <div><div class="r-lbl">GitHub Repo</div><div class="r-desc">Code · logs · run scripts</div></div>
-          </a>
-          <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="res-link">
-            <span class="ico">🎬</span>
-            <div><div class="r-lbl">Google Drive</div><div class="r-desc">111 tracking videos (~6.5 GB)</div></div>
-          </a>
-          <a href="https://arxiv.org/abs/2506.17220" target="_blank" class="res-link">
-            <span class="ico">📄</span>
-            <div><div class="r-lbl">arXiv Paper</div><div class="r-desc">2506.17220 — DiffTrack</div></div>
-          </a>
-        </div>
-      </div>
-
-    </div><!-- /wrap -->
-  </div><!-- /cv-project -->
-
-  <hr class="div">
-
-  <!-- ══════════════════════════════════════
-       BIBTEX
-  ══════════════════════════════════════ -->
-  <div class="section-pad" id="bibtex">
-    <div class="wrap">
-      <div class="lbl">Citation</div>
-      <h2 class="sec-title" style="font-size:clamp(22px,2.5vw,32px);margin-bottom:20px;">BibTeX</h2>
-      <div class="bib">@misc{nam2025emergenttemporalcorrespondencesvideo,
-      title={Emergent Temporal Correspondences from Video Diffusion Transformers},
-      author={Jisu Nam and Soowon Son and Dahyun Chung and Jiyoung Kim
-              and Siyoon Jin and Junhwa Hur and Seungryong Kim},
-      year={2025},
-      eprint={2506.17220},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV},
-      url={https://arxiv.org/abs/2506.17220},
-}</div>
     </div>
   </div>
 
-  <!-- ══════════════════════════════════════
-       FOOTER
-  ══════════════════════════════════════ -->
+  <hr class="div">
+
+  <!-- ══ FULL RESULTS ══ -->
+  <div class="pad" id="results">
+    <div class="wrap">
+      <div class="lbl">Full Ablation Results</div>
+      <h2 class="sec-title">All 13 Experiments</h2>
+
+      <!-- Timestep table -->
+      <h3 style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin:0 0 14px;">
+        Timestep Ablation — Layer=17 · CogVideoX-2B · TAP-Vid DAVIS
+      </h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Code ts</th><th>Paper t</th><th>Noise Scale</th>
+              <th>Videos</th><th>delta_avg ↑</th>
+              <th>delta_1</th><th>delta_8</th><th>delta_16</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="bad">
+              <td>ts=1</td><td class="nd">t≈49</td><td class="n">980</td><td class="nd">4</td>
+              <td class="nr">0.0</td><td class="nd">0.0</td><td class="nd">0.0</td><td class="nd">0.0</td>
+            </tr>
+            <tr class="bad">
+              <td>ts=5</td><td class="nd">t≈45</td><td class="n">900</td><td class="nd">4</td>
+              <td class="nr">0.8</td><td class="nd">0.0</td><td class="nd">0.4</td><td class="nd">3.5</td>
+            </tr>
+            <tr>
+              <td class="nd">ts=10</td><td class="nd">t≈40</td><td class="n">800</td><td class="nd">4</td>
+              <td class="n">13.1</td><td class="nd">0.1</td><td class="nd">17.6</td><td class="nd">41.9</td>
+            </tr>
+            <tr>
+              <td class="nd">ts=20</td><td class="nd">t≈30</td><td class="n">600</td><td class="nd">4</td>
+              <td class="n">33.4</td><td class="nd">1.5</td><td class="nd">52.3</td><td class="nd">82.6</td>
+            </tr>
+            <tr>
+              <td class="nd">ts=30</td><td class="nd">t=20</td><td class="n">400</td><td class="nd">4</td>
+              <td class="n">47.8</td><td class="nd">5.7</td><td class="nd">74.3</td><td class="nd">87.2</td>
+            </tr>
+            <tr class="opt">
+              <td>ts=49 ★</td><td class="nd">t=1</td><td class="n">20</td><td class="nd">2</td>
+              <td class="ng">47.0</td><td class="n">7.0</td><td class="n">74.6</td><td class="n">81.2</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Layer table -->
+      <h3 style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin:40px 0 14px;">
+        Layer Ablation — ts=49 (paper's t=1) · CogVideoX-2B · TAP-Vid DAVIS
+      </h3>
+      <img src="static/images/student_layer_chart.png" class="full-img" alt="Layer ablation chart">
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Layer</th><th>Position</th><th>Videos</th>
+              <th>delta_avg ↑</th><th>delta_1</th><th>delta_8</th><th>delta_16</th>
+              <th>Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="nd">l=5</td><td class="nd">Shallow</td><td class="nd">2</td>
+              <td class="n">31.3</td><td class="nd">0.8</td><td class="nd">51.7</td><td class="nd">73.8</td>
+              <td class="nd sm">−33% vs baseline</td>
+            </tr>
+            <tr class="wrn">
+              <td>l=8</td><td class="nd">Early-mid</td><td class="nd">4</td>
+              <td class="n">41.9</td><td class="nd">2.9</td><td class="nd">68.0</td><td class="nd">84.3</td>
+              <td style="color:var(--yellow);" class="sm">Positional bias (Fig 6) −10%</td>
+            </tr>
+            <tr class="opt">
+              <td>l=17 ★</td><td class="nd">Mid (optimal)</td><td class="nd">2</td>
+              <td class="ng">47.0</td><td class="n">7.0</td><td class="n">74.6</td><td class="n">81.2</td>
+              <td style="color:var(--green);" class="sm">Paper default ✅</td>
+            </tr>
+            <tr>
+              <td class="nd">l=27</td><td class="nd">Deep</td><td class="nd">2</td>
+              <td class="n">37.0</td><td class="nd">3.7</td><td class="nd">57.5</td><td class="nd">73.8</td>
+              <td class="nd sm">−21% vs baseline</td>
+            </tr>
+            <tr class="wrn">
+              <td>l=29</td><td class="nd">Near-final</td><td class="nd">4</td>
+              <td class="n">38.0</td><td class="nd">3.8</td><td class="nd">59.8</td><td class="nd">77.2</td>
+              <td style="color:var(--yellow);" class="sm">Diffuse attn (Fig A.18) −18%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="font-family:var(--mono);font-size:11px;color:var(--text-muted);margin-top:12px;line-height:1.8;">
+        All numbers verified against raw log files in <code>results/</code>.
+        delta_avg = avg % within {1,2,4,8,16}px (higher = better).
+        4-video no-chunk baseline at ts=49: 46.4 — paper reports 46.3 on 30 videos.
+      </p>
+    </div>
+  </div>
+
+  <hr class="div">
+
+  <!-- ══ LINEAGE ══ -->
+  <div class="pad" id="lineage">
+    <div class="wrap">
+      <div class="lbl">Research Lineage</div>
+      <h2 class="sec-title">What DiffTrack Builds On &amp; What It Enables</h2>
+      <p class="body-text" style="margin-bottom:32px;">
+        Tracing the intellectual chain: 12 predecessor papers that make DiffTrack possible,
+        and 8 forward-lineage papers that build on its contributions.
+      </p>
+
+      <!-- Predecessor table -->
+      <h3 style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin:0 0 14px;">
+        ← Predecessor Papers
+      </h3>
+      <div class="tbl-wrap" style="margin-bottom:40px;">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:30%">Paper</th>
+              <th style="width:28%">New Idea Introduced</th>
+              <th style="width:28%">How It Helped Build DiffTrack</th>
+              <th style="width:14%">Concept</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="n" style="font-size:12px;">Emergent Correspondence from Image Diffusion<br><span style="color:var(--text-muted);font-size:11px;">Tang et al., NeurIPS 2023</span></td>
+              <td class="nd" style="font-size:12px;">Showed image diffusion models contain emergent geometric correspondences</td>
+              <td class="nd" style="font-size:12px;">Direct foundation — extends from images→video, 2 frames→full temporal sequences</td>
+              <td><span style="background:rgba(0,220,255,0.1);color:var(--accent);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Temporal</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">Space-Time Correspondence as Contrastive Random Walk<br><span style="color:var(--text-muted);font-size:11px;">Jabri et al., NeurIPS 2020</span></td>
+              <td class="nd" style="font-size:12px;">Self-supervised spatiotemporal correspondence learning</td>
+              <td class="nd" style="font-size:12px;">Motivated temporal matching metrics and long-range consistency evaluation</td>
+              <td><span style="background:rgba(0,220,255,0.1);color:var(--accent);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Temporal</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">Semantics Meets Temporal Correspondence<br><span style="color:var(--text-muted);font-size:11px;">Qian et al., ICCV 2023</span></td>
+              <td class="nd" style="font-size:12px;">Semantic cues influence temporal correspondence</td>
+              <td class="nd" style="font-size:12px;">Inspired analysis of text-attention interference in temporal matching</td>
+              <td><span style="background:rgba(0,220,255,0.1);color:var(--accent);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Temporal</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">Self-Rectifying Diffusion Sampling with PAG<br><span style="color:var(--text-muted);font-size:11px;">Ahn et al., ECCV 2024</span></td>
+              <td class="nd" style="font-size:12px;">Attention perturbation to guide diffusion sampling</td>
+              <td class="nd" style="font-size:12px;">Direct predecessor to Cross-Frame Attention Guidance (CAG)</td>
+              <td><span style="background:rgba(255,209,102,0.12);color:var(--yellow);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">CAG</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">Diffusion Model for Dense Matching<br><span style="color:var(--text-muted);font-size:11px;">Nam et al., 2023</span></td>
+              <td class="nd" style="font-size:12px;">Diffusion features for dense correspondence</td>
+              <td class="nd" style="font-size:12px;">Evidence that diffusion models encode geometric structure, motivating Q/K analysis</td>
+              <td><span style="background:rgba(255,209,102,0.12);color:var(--yellow);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Q-K Attn</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">Unsupervised Semantic Correspondence via Stable Diffusion<br><span style="color:var(--text-muted);font-size:11px;">Hedlin et al., NeurIPS 2023</span></td>
+              <td class="nd" style="font-size:12px;">Diffusion cross-attention for semantic matching</td>
+              <td class="nd" style="font-size:12px;">Motivated query-key similarity and attention score metrics</td>
+              <td><span style="background:rgba(255,209,102,0.12);color:var(--yellow);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Q-K Attn</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">TAP-Vid Benchmark<br><span style="color:var(--text-muted);font-size:11px;">Doersch et al., NeurIPS 2022</span></td>
+              <td class="nd" style="font-size:12px;">Standard benchmark for point tracking evaluation</td>
+              <td class="nd" style="font-size:12px;">Provides the evaluation protocol for zero-shot tracking (our experiments use this)</td>
+              <td><span style="background:rgba(0,255,163,0.1);color:var(--green);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Tracking</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">CoTracker<br><span style="color:var(--text-muted);font-size:11px;">Karaev et al., ECCV 2024</span></td>
+              <td class="nd" style="font-size:12px;">Long-range point tracking via joint optimization</td>
+              <td class="nd" style="font-size:12px;">Provided pseudo-ground-truth for DiffTrack evaluation</td>
+              <td><span style="background:rgba(0,255,163,0.1);color:var(--green);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Tracking</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">CoTracker3<br><span style="color:var(--text-muted);font-size:11px;">Karaev et al., 2024</span></td>
+              <td class="nd" style="font-size:12px;">Tracking via pseudo-labeling real videos</td>
+              <td class="nd" style="font-size:12px;">Strengthened the baseline for evaluating tracking accuracy</td>
+              <td><span style="background:rgba(0,255,163,0.1);color:var(--green);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Tracking</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">Particle Video Revisited<br><span style="color:var(--text-muted);font-size:11px;">Harley et al., ECCV 2022</span></td>
+              <td class="nd" style="font-size:12px;">Long-range point tracking with occlusion handling</td>
+              <td class="nd" style="font-size:12px;">Motivated focus on long-range temporal consistency</td>
+              <td><span style="background:rgba(0,255,163,0.1);color:var(--green);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Tracking</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">CATs: Cost Aggregation Transformers<br><span style="color:var(--text-muted);font-size:11px;">Cho et al., NeurIPS 2021</span></td>
+              <td class="nd" style="font-size:12px;">Transformer-based cost aggregation for correspondence</td>
+              <td class="nd" style="font-size:12px;">Inspired layer-wise correspondence probing</td>
+              <td><span style="background:rgba(0,220,255,0.1);color:var(--accent);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Temporal</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">Neural Matching Fields<br><span style="color:var(--text-muted);font-size:11px;">Hong et al., NeurIPS 2022</span></td>
+              <td class="nd" style="font-size:12px;">Implicit representation of matching fields</td>
+              <td class="nd" style="font-size:12px;">Conceptual basis for the matching confidence metric</td>
+              <td><span style="background:rgba(0,220,255,0.1);color:var(--accent);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Temporal</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Forward lineage table -->
+      <h3 style="font-family:var(--display);font-size:18px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin:0 0 14px;">
+        → Forward Lineage — Papers That Build on DiffTrack
+      </h3>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th style="width:30%">Paper</th>
+              <th style="width:28%">New Idea Introduced</th>
+              <th style="width:28%">How It Builds on DiffTrack</th>
+              <th style="width:14%">Concept</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="n" style="font-size:12px;">Zero-Shot Video Restoration with Video Diffusion Models<br><span style="color:var(--text-muted);font-size:11px;">Cao et al., 2026</span></td>
+              <td class="nd" style="font-size:12px;">Temporal-strengthening post-processing and latent fusion</td>
+              <td class="nd" style="font-size:12px;">Builds on finding that video DiTs contain emergent temporal correspondences — uses them to stabilize restoration</td>
+              <td><span style="background:rgba(0,220,255,0.1);color:var(--accent);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Temporal</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">Counterfactual Tracking with Video Diffusion Models<br><span style="color:var(--text-muted);font-size:11px;">Shrivastava et al., ICLR 2026</span></td>
+              <td class="nd" style="font-size:12px;">Counterfactual prompting to propagate point markers through denoising</td>
+              <td class="nd" style="font-size:12px;">Extends zero-shot tracking — shows DiTs can track via prompting alone, validating that DiTs encode motion</td>
+              <td><span style="background:rgba(0,255,163,0.1);color:var(--green);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Tracking</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">Zero-Shot Video Deraining with Video Diffusion Models<br><span style="color:var(--text-muted);font-size:11px;">Varanka et al., WACV</span></td>
+              <td class="nd" style="font-size:12px;">Attention switching to maintain temporal consistency during deraining</td>
+              <td class="nd" style="font-size:12px;">Builds on cross-frame attention analysis — shows modifying attention improves temporal coherence</td>
+              <td><span style="background:rgba(255,209,102,0.12);color:var(--yellow);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">CAG</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">ZeroTrail: Zero-Shot Trajectory Control for Video DiMs<br><span style="color:var(--text-muted);font-size:11px;">Lu et al., NeurIPS Workshop</span></td>
+              <td class="nd" style="font-size:12px;">Selective Attention Guidance Module (SAGM) for trajectory control</td>
+              <td class="nd" style="font-size:12px;">Extends CAG into a full trajectory-control system</td>
+              <td><span style="background:rgba(255,209,102,0.12);color:var(--yellow);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">CAG</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">Cross-Attention for Zero-Shot Editing of T2V Models<br><span style="color:var(--text-muted);font-size:11px;">Motamed et al., CVPR Workshop 2024</span></td>
+              <td class="nd" style="font-size:12px;">Cross-attention controls object shape, position, and movement</td>
+              <td class="nd" style="font-size:12px;">Builds on insight that query-key layers govern temporal structure — applies it to editing</td>
+              <td><span style="background:rgba(255,209,102,0.12);color:var(--yellow);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Q-K Attn</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">DiTFlow: Video Motion Transfer with Diffusion Transformers<br><span style="color:var(--text-muted);font-size:11px;">Pondaven et al., CVPR 2025</span></td>
+              <td class="nd" style="font-size:12px;">Attention Motion Flow (AMF) from cross-frame attention maps</td>
+              <td class="nd" style="font-size:12px;">Directly builds on discovery that cross-frame attention encodes motion — applies it to motion transfer</td>
+              <td><span style="background:rgba(0,220,255,0.1);color:var(--accent);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Temporal</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">VDT: Video Diffusion Transformers via Mask Modeling<br><span style="color:var(--text-muted);font-size:11px;">Lu et al., 2025</span></td>
+              <td class="nd" style="font-size:12px;">Modular temporal attention and unified spatial-temporal modeling</td>
+              <td class="nd" style="font-size:12px;">Builds on finding that only specific layers encode temporal matching — designs architectures with explicit temporal modules</td>
+              <td><span style="background:rgba(0,220,255,0.1);color:var(--accent);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">Temporal</span></td>
+            </tr>
+            <tr>
+              <td class="n" style="font-size:12px;">Weighted Cross-Frame Attention for T2V Consistency<br><span style="color:var(--text-muted);font-size:11px;">Wang et al., 2025</span></td>
+              <td class="nd" style="font-size:12px;">Weighted cross-frame attention for temporal coherence</td>
+              <td class="nd" style="font-size:12px;">Extends CAG by weighting cross-frame attention to stabilize long videos</td>
+              <td><span style="background:rgba(255,209,102,0.12);color:var(--yellow);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;">CAG</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <hr class="div">
+
+  <!-- ══ RESOURCES ══ -->
+  <div class="pad" id="resources">
+    <div class="wrap">
+      <div class="lbl">Resources</div>
+      <h2 class="sec-title" style="font-size:clamp(22px,2.5vw,32px);">Links</h2>
+      <div class="res-grid">
+        <a href="https://github.com/SohumDamani/DiffTrack-CvProject" target="_blank" class="res-link">
+          <span class="ico">📁</span>
+          <div><div class="r-lbl">GitHub Repo</div><div class="r-desc">Code · logs · run scripts</div></div>
+        </a>
+        <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="res-link">
+          <span class="ico">🎬</span>
+          <div><div class="r-lbl">Google Drive</div><div class="r-desc">111 tracking videos (~6.5 GB)</div></div>
+        </a>
+        <a href="https://arxiv.org/abs/2506.17220" target="_blank" class="res-link">
+          <span class="ico">📄</span>
+          <div><div class="r-lbl">DiffTrack Paper</div><div class="r-desc">arXiv 2506.17220 · NeurIPS 2025</div></div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
   <footer>
-    <p>DiffTrack &nbsp;·&nbsp; NeurIPS 2025 &nbsp;·&nbsp; KAIST AI · Korea University · Google DeepMind</p>
-    <p style="color:#2A3A4A;">Page adapted for CV Final Project &nbsp;·&nbsp; Sohum Damani &nbsp;·&nbsp; 2026</p>
+    <p>DiffTrack Reproduction &amp; Ablation Study · Sohum Damani · CV Final Project · 2026</p>
+    <p>Based on <a href="https://arxiv.org/abs/2506.17220" target="_blank" style="color:var(--accent);text-decoration:none;">DiffTrack (NeurIPS 2025)</a> by Nam et al. · KAIST AI, Korea University, Google DeepMind</p>
   </footer>
 
-  <!-- ══════════════════════════════════════
-       CURSOR JS
-  ══════════════════════════════════════ -->
+  <!-- ══ CURSOR JS ══ -->
   <script>
     const dot  = document.getElementById('cur-dot');
     const ring = document.getElementById('cur-ring');
@@ -1175,8 +931,8 @@
 
     document.addEventListener('mousemove', e => {
       mx = e.clientX; my = e.clientY;
-      dot.style.left  = (mx - 3.5) + 'px';
-      dot.style.top   = (my - 3.5) + 'px';
+      dot.style.left = (mx - 3.5) + 'px';
+      dot.style.top  = (my - 3.5) + 'px';
     });
 
     (function animRing() {
@@ -1187,25 +943,21 @@
       requestAnimationFrame(animRing);
     })();
 
-    document.querySelectorAll('a, button, .r-card, .m-card, .vid-card').forEach(el => {
+    document.querySelectorAll('a, button, .r-card, .m-card').forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cur-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cur-hover'));
     });
 
-    /* Scroll-based nav active state */
-    const sections = document.querySelectorAll('[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
     const obs = new IntersectionObserver(entries => {
       entries.forEach(e => {
         if (e.isIntersecting) {
-          navLinks.forEach(l => l.style.color = '');
+          document.querySelectorAll('.nav-links a').forEach(l => l.style.color = '');
           const a = document.querySelector(`.nav-links a[href="#${e.target.id}"]`);
           if (a) a.style.color = 'var(--accent)';
         }
       });
     }, { rootMargin: '-40% 0px -55% 0px' });
-    sections.forEach(s => obs.observe(s));
+    document.querySelectorAll('[id]').forEach(s => obs.observe(s));
   </script>
-
 </body>
 </html>
