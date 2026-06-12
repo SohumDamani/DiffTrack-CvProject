@@ -546,6 +546,228 @@
       
 
 
+<!-- ═══════════════════════════════════════════════════════════════
+     CV FINAL PROJECT — Sohum Damani
+     Reproduction & Ablation Study of DiffTrack on TAP-Vid DAVIS
+     ═══════════════════════════════════════════════════════════════ -->
+<section class="section" id="cv-project" style="background: #f8fafc; border-top: 3px solid #2563EB;">
+  <div class="container is-max-desktop">
+
+    <!-- Title -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3" style="color: #1e40af;">
+          🎓 CV Final Project — Reproduction &amp; Ablation Study
+        </h2>
+        <p style="font-size: 16px; color: #475569;">
+          <strong>Sohum Damani</strong> &nbsp;·&nbsp; TAP-Vid DAVIS &nbsp;·&nbsp; CogVideoX-2B &nbsp;·&nbsp; Zero-Shot Point Tracking
+        </p>
+        <p style="font-size: 15px; color: #64748b; margin-top: 6px;">
+          We reproduced the paper's baseline, ran 13 ablation experiments, and confirmed 2 strengths and 3 paper-grounded limitations.
+          All experiment logs are committed to the <a href="https://github.com/SohumDamani/DiffTrack-CvProject" target="_blank">GitHub repo</a>.
+          Tracking videos are hosted on <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank">Google Drive (~111 MP4s)</a>.
+        </p>
+      </div>
+    </div>
+
+    <!-- ── STRENGTH 1: Baseline Reproduction ── -->
+    <div class="columns is-centered" style="margin-top: 30px;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-4" style="color: #16a34a;">✅ Strength 1 — Baseline Faithfully Reproduced</h3>
+        <p style="font-size: 16px;">
+          We ran the paper's recommended configuration (layer=17, ts=49 = paper's t=1) on 2 TAP-Vid DAVIS videos
+          and obtained <strong>delta_avg = 47.0</strong>, compared to the paper's reported <strong>46.3</strong> on the full 30-video set —
+          within 1.5%. The method tracks real physical points zero-shot, with no training.
+        </p>
+        <div class="columns is-centered" style="margin-top: 15px;">
+          <div class="column is-half has-text-centered">
+            <p style="font-size: 13px; font-weight: bold; color: #374151;">✅ Layer 17, ts=49 — Working Tracking (delta_avg = 47.0)</p>
+            <img src="static/images/student_track_good.png" style="width: 100%; border-radius: 6px; border: 2px solid #16a34a;">
+            <p style="font-size: 12px; color: #6b7280; margin-top: 4px;">Frame 35 of Video 0. Colored dots = predicted tracks.</p>
+          </div>
+          <div class="column is-half has-text-centered">
+            <p style="font-size: 13px; font-weight: bold; color: #374151;">Peak at ts=30 — Marginally Better (delta_avg = 47.8)</p>
+            <img src="static/images/student_track_ts30.png" style="width: 100%; border-radius: 6px; border: 2px solid #2563EB;">
+            <p style="font-size: 12px; color: #6b7280; margin-top: 4px;">Same video, ts=30. Confirms paper Fig 4(c) slight peak before final step.</p>
+          </div>
+        </div>
+        <div style="background: #f0fdf4; border-left: 4px solid #16a34a; padding: 12px 16px; margin-top: 12px; border-radius: 4px;">
+          <strong>What to look for:</strong> Colored trajectory lines following object motion across frames.
+          Visible tracking of moving objects validates the emergent correspondence mechanism.
+          <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank">▶ Watch full tracking videos on Drive</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── STRENGTH 2: Timestep Sensitivity Curve ── -->
+    <div class="columns is-centered" style="margin-top: 40px;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-4" style="color: #16a34a;">✅ Strength 2 — Timestep Sensitivity Independently Verified</h3>
+        <p style="font-size: 16px;">
+          We ran 6 timestep values (ts=1, 5, 10, 20, 30, 49) and traced the full sensitivity curve.
+          This independently replicates <strong>paper Figure 4(c)</strong>: performance rises from zero at high noise,
+          peaks slightly before the final denoising step (ts=30 → 47.8 &gt; ts=49 → 47.0),
+          and collapses completely at ts=1 (0.0 on all 4 videos).
+        </p>
+        <img src="static/images/student_timestep_curve.png" style="width: 100%; margin-top: 12px; border-radius: 6px;">
+        <div style="background: #f0fdf4; border-left: 4px solid #16a34a; padding: 12px 16px; margin-top: 12px; border-radius: 4px;">
+          <strong>Key insight:</strong> The "ts=30 &gt; ts=49" ordering independently confirms the paper's claim of
+          "slight degradation toward the final denoising steps" — something we verified in our own data, not just taken from the paper.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LIMITATION 1: ts=1 total collapse ── -->
+    <div class="columns is-centered" style="margin-top: 40px;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-4" style="color: #dc2626;">⚠️ Limitation 1 — Complete Failure at Wrong Timestep</h3>
+        <p style="font-size: 16px;">
+          At ts=1 (scheduler noise level t=980 out of 1000), <strong>every single metric is exactly 0.0</strong>
+          across all 4 test videos. The transformer receives clean video latents but is conditioned on the
+          near-maximum-noise timestep — a distribution mismatch that destroys all correspondence features.
+          This is confirmed by paper Figure 4(c) and Section 4.
+        </p>
+        <div class="columns is-centered" style="margin-top: 15px;">
+          <div class="column is-half has-text-centered">
+            <p style="font-size: 13px; font-weight: bold; color: #374151;">✅ ts=49 — Tracking Works</p>
+            <img src="static/images/student_track_good.png" style="width: 100%; border-radius: 6px; border: 2px solid #16a34a;">
+            <p style="font-size: 12px; color: #6b7280; margin-top: 4px;">delta_avg = 47.0</p>
+          </div>
+          <div class="column is-half has-text-centered">
+            <p style="font-size: 13px; font-weight: bold; color: #dc2626;">❌ ts=1 — Complete Failure</p>
+            <img src="static/images/student_track_fail.png" style="width: 100%; border-radius: 6px; border: 2px solid #dc2626;">
+            <p style="font-size: 12px; color: #6b7280; margin-top: 4px;">delta_avg = 0.00 (all 4 videos, all metrics)</p>
+          </div>
+        </div>
+        <div style="background: #fef2f2; border-left: 4px solid #dc2626; padding: 12px 16px; margin-top: 12px; border-radius: 4px;">
+          <strong>Mechanism (code-verified):</strong> With no DDIM inversion (our experiments don't use <code>--do_inversion</code>),
+          the pipeline encodes the real video to clean VAE latents, then runs the transformer conditioned at timestep t=980.
+          This is inconsistent with training (model expects heavily noisy latents at t=980). Features collapse entirely.
+          The effective operating range is ts=30–49 only.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LIMITATION 2: Positional bias ── -->
+    <div class="columns is-centered" style="margin-top: 40px;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-4" style="color: #d97706;">⚠️ Limitation 2 — Positional Bias in Layer 8 (Paper Figure 6)</h3>
+        <p style="font-size: 16px;">
+          Layer 8 achieves <strong>delta_avg = 41.9</strong> vs the optimal layer 17's ~46.4 — a 10% deficit.
+          Paper Figure 6 explicitly identifies this layer as having high tracking confidence but low accuracy,
+          because RoPE positional embeddings cause the model to match <em>the same spatial location</em> rather than the actual object.
+        </p>
+        <div class="columns is-centered" style="margin-top: 15px;">
+          <div class="column is-half has-text-centered">
+            <p style="font-size: 13px; font-weight: bold;">✅ Layer 17 (optimal) — delta_avg = 47.0</p>
+            <img src="static/images/student_track_good.png" style="width: 100%; border-radius: 6px; border: 2px solid #16a34a;">
+          </div>
+          <div class="column is-half has-text-centered">
+            <p style="font-size: 13px; font-weight: bold; color: #d97706;">⚠️ Layer 8 (positional bias) — delta_avg = 41.9</p>
+            <img src="static/images/student_track_l8.png" style="width: 100%; border-radius: 6px; border: 2px solid #d97706;">
+          </div>
+        </div>
+        <div style="background: #fffbeb; border-left: 4px solid #d97706; padding: 12px 16px; margin-top: 12px; border-radius: 4px;">
+          <strong>Paper grounding:</strong> Figure 6 in the paper explicitly identifies this effect — PCA of queries/keys in layer 8
+          reveals dominance of positional cues, and tracked points cluster at original spatial positions rather than true correspondences.
+          Our quantitative result (41.9 vs 46.4) confirms this.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── LIMITATION 3: Over-abstracted layers ── -->
+    <div class="columns is-centered" style="margin-top: 40px;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-4" style="color: #d97706;">⚠️ Limitation 3 — Diffuse Attention in Final Layers (Paper Figure A.18)</h3>
+        <p style="font-size: 16px;">
+          Layer 29 achieves <strong>delta_avg = 38.0</strong> vs layer 17's ~46.4 — an 18% deficit.
+          Paper Figure A.18 explicitly names layers 8, 24, and 29 as the <strong>bottom-3 performers</strong>,
+          showing "diffuse and scattered attention" that cannot localize corresponding points.
+          We tested both layers 8 and 29 from this list and confirm the degradation.
+        </p>
+        <div class="columns is-centered" style="margin-top: 15px;">
+          <div class="column is-half has-text-centered">
+            <p style="font-size: 13px; font-weight: bold;">✅ Layer 17 (optimal) — delta_avg = 47.0</p>
+            <img src="static/images/student_track_good.png" style="width: 100%; border-radius: 6px; border: 2px solid #16a34a;">
+          </div>
+          <div class="column is-half has-text-centered">
+            <p style="font-size: 13px; font-weight: bold; color: #d97706;">⚠️ Layer 29 (bottom-3, diffuse) — delta_avg = 38.0</p>
+            <img src="static/images/student_track_l29.png" style="width: 100%; border-radius: 6px; border: 2px solid #d97706;">
+          </div>
+        </div>
+        <div style="background: #fffbeb; border-left: 4px solid #d97706; padding: 12px 16px; margin-top: 12px; border-radius: 4px;">
+          <strong>Paper grounding:</strong> Figure A.18 caption: "Bottom-3 layers (l=8, 24, 29) display diffuse and scattered attention."
+          Layer 17 is in the top-3 (l=13, 17, 21) with "sharp and precise localization."
+          The 18% gap between layer 29 and layer 17 is consistent with the paper's visualization.
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Full Results Tables ── -->
+    <div class="columns is-centered" style="margin-top: 40px;">
+      <div class="column is-four-fifths">
+        <h3 class="title is-4">📊 Full Ablation Results</h3>
+
+        <p style="font-size: 15px; font-weight: bold; margin-bottom: 8px;">Timestep Ablation (Layer=17 fixed, CogVideoX-2B, TAP-Vid DAVIS)</p>
+        <table class="table is-bordered is-striped is-fullwidth" style="font-size: 14px; text-align: center;">
+          <thead style="background: #1e40af; color: white;">
+            <tr>
+              <th style="color:white;">Code ts</th><th style="color:white;">Paper t</th>
+              <th style="color:white;">Noise (0–1000)</th><th style="color:white;">Videos</th>
+              <th style="color:white;">delta_avg ↑</th><th style="color:white;">delta_1</th>
+              <th style="color:white;">delta_8</th><th style="color:white;">delta_16</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="background: #fef2f2;"><td>ts=1</td><td>t≈49</td><td>980</td><td>4</td><td><strong>0.0</strong></td><td>0.0</td><td>0.0</td><td>0.0</td></tr>
+            <tr style="background: #fef2f2;"><td>ts=5</td><td>t≈45</td><td>900</td><td>4</td><td>0.8</td><td>0.0</td><td>0.4</td><td>3.5</td></tr>
+            <tr><td>ts=10</td><td>t≈40</td><td>800</td><td>4</td><td>13.1</td><td>0.1</td><td>17.6</td><td>41.9</td></tr>
+            <tr><td>ts=20</td><td>t≈30</td><td>600</td><td>4</td><td>33.4</td><td>1.5</td><td>52.3</td><td>82.6</td></tr>
+            <tr style="background: #f0fdf4;"><td><strong>ts=30</strong></td><td>t=20</td><td>400</td><td>4</td><td><strong>47.8</strong></td><td>5.7</td><td>74.3</td><td>87.2</td></tr>
+            <tr style="background: #f0fdf4;"><td><strong>ts=49</strong></td><td>t=1</td><td>20</td><td>2</td><td><strong>47.0</strong></td><td>7.0</td><td>74.6</td><td>81.2</td></tr>
+          </tbody>
+        </table>
+
+        <p style="font-size: 15px; font-weight: bold; margin-top: 20px; margin-bottom: 8px;">Layer Ablation (ts=49 = paper's t=1, CogVideoX-2B, TAP-Vid DAVIS)</p>
+        <img src="static/images/student_layer_chart.png" style="width: 100%; border-radius: 6px; margin-bottom: 12px;">
+        <table class="table is-bordered is-striped is-fullwidth" style="font-size: 14px; text-align: center;">
+          <thead style="background: #1e40af; color: white;">
+            <tr>
+              <th style="color:white;">Layer</th><th style="color:white;">Position</th>
+              <th style="color:white;">Videos</th><th style="color:white;">delta_avg ↑</th>
+              <th style="color:white;">delta_1</th><th style="color:white;">delta_8</th>
+              <th style="color:white;">delta_16</th><th style="color:white;">Note</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>l=5</td><td>Shallow</td><td>2</td><td>31.3</td><td>0.8</td><td>51.7</td><td>73.8</td><td>−33% vs baseline</td></tr>
+            <tr style="background: #fffbeb;"><td>l=8</td><td>Early-mid</td><td>4</td><td>41.9</td><td>2.9</td><td>68.0</td><td>84.3</td><td>Positional bias (Fig 6) −10%</td></tr>
+            <tr style="background: #f0fdf4;"><td><strong>l=17</strong></td><td>Mid (optimal)</td><td>2</td><td><strong>47.0</strong></td><td>7.0</td><td>74.6</td><td>81.2</td><td>Paper default ✅</td></tr>
+            <tr><td>l=27</td><td>Deep</td><td>2</td><td>37.0</td><td>3.7</td><td>57.5</td><td>73.8</td><td>−21% vs baseline</td></tr>
+            <tr style="background: #fffbeb;"><td>l=29</td><td>Near-final</td><td>4</td><td>38.0</td><td>3.8</td><td>59.8</td><td>77.2</td><td>Diffuse attn (Fig A.18) −18%</td></tr>
+          </tbody>
+        </table>
+
+        <p style="font-size: 13px; color: #6b7280; margin-top: 8px;">
+          All numbers verified against raw <code>log.txt</code> files in <code>results/</code>.
+          delta_avg = average % of predictions within {1,2,4,8,16} pixel thresholds (higher is better).
+          4-video baseline at ts=49 (no-chunk run): 46.4 — paper reports 46.3 on 30 videos.
+        </p>
+
+        <div style="margin-top: 20px; padding: 16px; background: #eff6ff; border-radius: 8px; border: 1px solid #bfdbfe;">
+          <strong>Resources:</strong>
+          <a href="https://github.com/SohumDamani/DiffTrack-CvProject" target="_blank" style="margin-left: 10px;">📁 GitHub Repo (code + logs)</a>
+          <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" style="margin-left: 10px;">🎬 Google Drive (111 tracking videos)</a>
+          <a href="https://arxiv.org/abs/2506.17220" target="_blank" style="margin-left: 10px;">📄 Paper (arXiv)</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+<!-- ═══════════════════════════════════════════ end CV Final Project ═══ -->
+
+
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
     <h2 class="title">BibTeX</h2>
