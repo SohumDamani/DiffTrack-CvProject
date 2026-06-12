@@ -882,12 +882,25 @@
             <span class="r-title">Strength 1 — Baseline Faithfully Reproduced</span>
             <span class="r-val">47.0</span>
           </div>
-          <img src="static/images/student_track_good.png" alt="Tracking works at ts=49">
+          <div class="img-pair">
+            <div class="img-slot">
+              <img src="static/images/student_track_good.png" alt="Tracking works at ts=49">
+              <div class="tag" style="color:var(--green);">ts=49 (paper's t=1) · delta_avg = 47.0 ✅</div>
+            </div>
+            <div class="img-slot">
+              <img src="static/images/student_track_ts30.png" alt="ts=30 plateau">
+              <div class="tag" style="color:var(--accent);">ts=30 — also in effective plateau · 47.8</div>
+            </div>
+          </div>
           <div class="r-body">
-            <p>Layer=17, ts=49 (paper's t=1) on 2 TAP-Vid DAVIS videos. Colored trajectory lines follow real object motion zero-shot — no training required.</p>
+            <p>Layer=17, ts=49 (paper's t=1) on 2 TAP-Vid DAVIS videos. Colored trajectory lines follow real object motion zero-shot — no training required. ts=30 and ts=49 both sit in the 47–48 effective plateau.</p>
             <div class="mech g">
               <div class="mech-lbl">Result</div>
               <p>delta_avg = <strong class="g">47.0</strong> vs paper's 46.3 on full 30-video DAVIS set — within 1.5%. Method faithfully reproduced.</p>
+            </div>
+            <div style="margin-top:12px;padding:10px 14px;background:var(--accent-dim);border:1px solid var(--border-strong);border-radius:var(--radius);font-size:13px;color:var(--text-dim);">
+              <strong style="color:var(--accent);">▶ What to look for:</strong> Colored trajectory lines following object motion across frames.
+              <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" style="color:var(--accent);text-decoration:none;margin-left:8px;">Watch full tracking videos on Drive →</a>
             </div>
           </div>
         </div>
