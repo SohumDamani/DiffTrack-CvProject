@@ -12,11 +12,9 @@
   <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
   <script defer src="./static/js/fontawesome.all.min.js"></script>
-  <link rel="icon" href="./static/images/favicon.svg">
 
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg:            #06090F;
       --surface:       #0C1018;
@@ -39,7 +37,6 @@
       --mono:          'JetBrains Mono', monospace;
       --r:             4px;
     }
-
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg); color: var(--text);
@@ -49,297 +46,206 @@
     a { cursor: none; }
 
     /* CURSOR */
-    #cur-dot {
-      position: fixed; width: 7px; height: 7px;
-      background: var(--accent); border-radius: 50%;
-      pointer-events: none; z-index: 9999; mix-blend-mode: screen;
-    }
-    #cur-ring {
-      position: fixed; width: 30px; height: 30px;
-      border: 1px solid rgba(0,220,255,0.4); border-radius: 50%;
-      pointer-events: none; z-index: 9998;
-      transition: transform 0.2s ease, border-color 0.2s;
-    }
+    #cur-dot { position:fixed;width:7px;height:7px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:screen; }
+    #cur-ring { position:fixed;width:30px;height:30px;border:1px solid rgba(0,220,255,0.4);border-radius:50%;pointer-events:none;z-index:9998;transition:transform 0.2s ease,border-color 0.2s; }
     .cur-hover #cur-dot  { transform: scale(3); }
     .cur-hover #cur-ring { transform: scale(1.4); border-color: var(--accent); }
 
     /* NAV */
     nav {
-      position: sticky; top: 0; z-index: 100;
-      display: flex; align-items: center; justify-content: space-between;
-      padding: 14px 48px;
-      background: rgba(6,9,15,0.9); backdrop-filter: blur(16px);
-      border-bottom: 1px solid var(--border);
+      position:sticky;top:0;z-index:100;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 48px;
+      background:rgba(6,9,15,0.9);backdrop-filter:blur(16px);
+      border-bottom:1px solid var(--border);
     }
-    .nav-logo {
-      font-family: var(--display); font-weight: 800; font-size: 15px;
-      letter-spacing: -0.02em; color: var(--accent); text-decoration: none;
-    }
-    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-logo { font-family:var(--display);font-weight:800;font-size:15px;letter-spacing:-0.02em;color:var(--accent);text-decoration:none; }
+    .nav-links { display:flex;gap:28px;list-style:none; }
     .nav-links a {
-      font-family: var(--display); font-size: 12px; font-weight: 500;
-      color: var(--text-dim); text-decoration: none;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      position: relative; transition: color 0.2s;
+      font-family:var(--display);font-size:12px;font-weight:500;
+      color:var(--text-dim);text-decoration:none;
+      letter-spacing:0.06em;text-transform:uppercase;
+      position:relative;transition:color 0.2s;
     }
-    .nav-links a::after {
-      content: ''; position: absolute; bottom: -3px; left: 0;
-      width: 0; height: 1px; background: var(--accent); transition: width 0.3s;
-    }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-links a:hover::after { width: 100%; }
+    .nav-links a::after { content:'';position:absolute;bottom:-3px;left:0;width:0;height:1px;background:var(--accent);transition:width 0.3s; }
+    .nav-links a:hover { color:var(--accent); }
+    .nav-links a:hover::after { width:100%; }
 
     /* LAYOUT */
-    .wrap { max-width: 1100px; margin: 0 auto; padding: 0 48px; }
-    .pad  { padding: 64px 0; }
-    hr.div { border: none; border-top: 1px solid var(--border); }
-
-    .lbl {
-      font-family: var(--mono); font-size: 11px; font-weight: 500;
-      color: var(--accent); letter-spacing: 0.12em;
-      text-transform: uppercase; margin-bottom: 10px;
-    }
-    .sec-title {
-      font-family: var(--display);
-      font-size: clamp(26px, 3.5vw, 44px);
-      font-weight: 800; line-height: 1.08;
-      letter-spacing: -0.03em; color: #EAF2FA; margin-bottom: 18px;
-    }
-    .body-text {
-      font-family: var(--sans); font-size: 16px;
-      line-height: 1.75; color: var(--text-dim); max-width: 780px;
-    }
-    .sub-heading {
-      font-family: var(--display); font-size: 20px; font-weight: 700;
-      color: var(--text); letter-spacing: -0.02em; margin: 40px 0 14px;
-    }
+    .wrap { max-width:1100px;margin:0 auto;padding:0 48px; }
+    .pad  { padding:64px 0; }
+    hr.div { border:none;border-top:1px solid var(--border); }
+    .lbl { font-family:var(--mono);font-size:11px;font-weight:500;color:var(--accent);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:10px; }
+    .sec-title { font-family:var(--display);font-size:clamp(26px,3.5vw,44px);font-weight:800;line-height:1.08;letter-spacing:-0.03em;color:#EAF2FA;margin-bottom:18px; }
+    .body-text { font-family:var(--sans);font-size:16px;line-height:1.75;color:var(--text-dim);max-width:780px; }
+    .sub-heading { font-family:var(--display);font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.02em;margin:40px 0 14px; }
 
     /* HERO */
-    .hero {
-      padding: 80px 48px 60px;
-      max-width: 1100px; margin: 0 auto; position: relative; overflow: hidden;
-    }
-    .hero::before {
-      content: ''; position: absolute;
-      top: -200px; right: -200px; width: 600px; height: 600px;
-      background: radial-gradient(circle, rgba(0,220,255,0.04) 0%, transparent 65%);
-      pointer-events: none;
-    }
-    .hero-pill {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--mono); font-size: 11px;
-      color: var(--yellow); border: 1px solid rgba(255,209,102,0.3);
-      background: rgba(255,209,102,0.06); padding: 5px 14px;
-      border-radius: 100px; margin-bottom: 26px; letter-spacing: 0.06em;
-    }
-    .hero-pill .blink {
-      width: 6px; height: 6px; background: var(--yellow);
-      border-radius: 50%; animation: blink 2.2s ease-in-out infinite;
-    }
-    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.2} }
-    h1.hero-title {
-      font-family: var(--display);
-      font-size: clamp(36px, 5vw, 64px);
-      font-weight: 800; line-height: 1.03;
-      letter-spacing: -0.035em; color: #EEF5FF; margin-bottom: 20px;
-    }
-    h1.hero-title .hl { color: var(--accent); }
-    .hero-rq {
-      font-family: var(--mono); font-size: 14px; color: var(--text-dim);
-      border-left: 2px solid var(--accent); padding-left: 14px;
-      margin-bottom: 24px; line-height: 1.6;
-    }
-    .hero-sub {
-      font-family: var(--sans); font-size: 16px;
-      color: var(--text-dim); max-width: 680px; line-height: 1.7;
-      margin-bottom: 28px;
-    }
-    .hero-sub a { color: var(--accent); text-decoration: none; }
-    .hero-sub a:hover { text-decoration: underline; }
-    .hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
-    .btn {
-      display: inline-flex; align-items: center; gap: 8px;
-      padding: 10px 22px; font-family: var(--display);
-      font-size: 13px; font-weight: 600; text-decoration: none;
-      border-radius: var(--r); transition: all 0.22s; letter-spacing: 0.01em;
-    }
-    .btn-fill  { background: var(--accent); color: var(--bg); border: 1px solid var(--accent); }
-    .btn-fill:hover  { background: transparent; color: var(--accent); transform: translateY(-2px); }
-    .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border-strong); }
-    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+    .hero { padding:72px 48px 52px;max-width:1100px;margin:0 auto;position:relative;overflow:hidden; }
+    .hero::before { content:'';position:absolute;top:-200px;right:-200px;width:600px;height:600px;background:radial-gradient(circle,rgba(0,220,255,0.04) 0%,transparent 65%);pointer-events:none; }
+    .hero-pill { display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;color:var(--yellow);border:1px solid rgba(255,209,102,0.3);background:rgba(255,209,102,0.06);padding:5px 14px;border-radius:100px;margin-bottom:22px;letter-spacing:0.06em; }
+    .hero-pill .blink { width:6px;height:6px;background:var(--yellow);border-radius:50%;animation:blink 2.2s ease-in-out infinite; }
+    @keyframes blink { 0%,100%{opacity:1}50%{opacity:.2} }
+    h1.hero-title { font-family:var(--display);font-size:clamp(34px,5vw,62px);font-weight:800;line-height:1.03;letter-spacing:-0.035em;color:#EEF5FF;margin-bottom:18px; }
+    h1.hero-title .hl { color:var(--accent); }
+    .hero-rq { font-family:var(--mono);font-size:14px;color:var(--text-dim);border-left:2px solid var(--accent);padding-left:14px;margin-bottom:22px;line-height:1.6; }
+    .hero-sub { font-family:var(--sans);font-size:16px;color:var(--text-dim);max-width:680px;line-height:1.7;margin-bottom:26px; }
+    .hero-sub a { color:var(--accent);text-decoration:none; }
+    .hero-sub a:hover { text-decoration:underline; }
+    .hero-btns { display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px; }
+    .btn { display:inline-flex;align-items:center;gap:8px;padding:10px 22px;font-family:var(--display);font-size:13px;font-weight:600;text-decoration:none;border-radius:var(--r);transition:all 0.22s;letter-spacing:0.01em; }
+    .btn-fill  { background:var(--accent);color:var(--bg);border:1px solid var(--accent); }
+    .btn-fill:hover  { background:transparent;color:var(--accent);transform:translateY(-2px); }
+    .btn-ghost { background:transparent;color:var(--text);border:1px solid var(--border-strong); }
+    .btn-ghost:hover { border-color:var(--accent);color:var(--accent);transform:translateY(-2px); }
 
-    /* KEY METRICS BENTO */
-    .bento { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 36px 0; }
-    .m-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 24px 20px;
-      position: relative; overflow: hidden;
-      transition: border-color 0.25s, transform 0.25s;
+    /* VIDEO */
+    video {
+      width:100%;display:block;border-radius:var(--r);
+      background:#000;
     }
-    .m-card::before {
-      content: ''; position: absolute;
-      top: 0; left: 0; right: 0; height: 2px;
+    .vid-pair { display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0; }
+    .vid-triple { display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:16px 0; }
+    .vid-card {
+      background:var(--surface);border:1px solid var(--border);
+      border-radius:var(--r);overflow:hidden;
+      transition:border-color 0.25s,transform 0.25s;
     }
-    .m-card.g::before { background: var(--green); }
-    .m-card.r::before { background: var(--red); }
-    .m-card.y::before { background: var(--yellow); }
-    .m-card.b::before { background: var(--accent); }
-    .m-card:hover { border-color: var(--border-strong); transform: translateY(-3px); }
-    .m-num {
-      font-family: var(--mono); font-size: 44px; font-weight: 600;
-      line-height: 1; margin-bottom: 6px;
+    .vid-card:hover { border-color:var(--border-strong);transform:translateY(-2px); }
+    .vid-card.g { border-top:2px solid var(--green); }
+    .vid-card.r { border-top:2px solid var(--red); }
+    .vid-card.y { border-top:2px solid var(--yellow); }
+    .vid-card.b { border-top:2px solid var(--accent); }
+    .vid-label {
+      padding:8px 12px;font-family:var(--mono);font-size:11px;
+      border-top:1px solid var(--border);background:var(--surface-2);
+      display:flex;justify-content:space-between;align-items:center;
     }
-    .m-card.g .m-num { color: var(--green); }
-    .m-card.r .m-num { color: var(--red); }
-    .m-card.y .m-num { color: var(--yellow); }
-    .m-card.b .m-num { color: var(--accent); }
-    .m-title { font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-    .m-sub   { font-size: 12px; color: var(--text-muted); line-height: 1.4; }
+    .vid-label .vl-name { color:var(--text-dim); }
+    .vid-label .vl-val  { font-weight:600; }
+    .vid-card.g .vl-val { color:var(--green); }
+    .vid-card.r .vl-val { color:var(--red); }
+    .vid-card.y .vl-val { color:var(--yellow); }
+    .vid-card.b .vl-val { color:var(--accent); }
+
+    /* HERO VIDEO */
+    .hero-vid {
+      border:1px solid var(--border-strong);border-radius:var(--r);
+      overflow:hidden;margin-top:0;
+    }
+    .hero-vid-label {
+      padding:9px 14px;background:var(--surface-2);
+      border-top:1px solid var(--border);
+      font-family:var(--mono);font-size:12px;color:var(--text-dim);
+      display:flex;justify-content:space-between;
+    }
+    .hero-vid-label .badge {
+      background:rgba(0,255,163,0.12);color:var(--green);
+      padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;
+    }
+
+    /* BENTO METRICS */
+    .bento { display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:36px 0; }
+    .m-card { background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:24px 20px;position:relative;overflow:hidden;transition:border-color 0.25s,transform 0.25s; }
+    .m-card::before { content:'';position:absolute;top:0;left:0;right:0;height:2px; }
+    .m-card.g::before { background:var(--green); }
+    .m-card.r::before { background:var(--red); }
+    .m-card.y::before { background:var(--yellow); }
+    .m-card:hover { border-color:var(--border-strong);transform:translateY(-3px); }
+    .m-num { font-family:var(--mono);font-size:44px;font-weight:600;line-height:1;margin-bottom:6px; }
+    .m-card.g .m-num { color:var(--green); }
+    .m-card.r .m-num { color:var(--red); }
+    .m-card.y .m-num { color:var(--yellow); }
+    .m-title { font-family:var(--display);font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px; }
+    .m-sub   { font-size:12px;color:var(--text-muted);line-height:1.4; }
 
     /* TABLES */
-    .tbl-wrap { overflow-x: auto; border-radius: var(--r); border: 1px solid var(--border); margin: 16px 0; }
-    table { width: 100%; border-collapse: collapse; }
-    thead { background: var(--surface-2); }
-    thead th {
-      padding: 11px 15px; text-align: left;
-      font-family: var(--mono); font-size: 10px; font-weight: 600;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--accent); border-bottom: 1px solid var(--border); white-space: nowrap;
-    }
-    tbody tr { border-bottom: 1px solid rgba(255,255,255,0.035); transition: background 0.2s; }
-    tbody tr:hover { background: rgba(0,220,255,0.04); }
-    tbody tr:last-child { border-bottom: none; }
-    tbody td {
-      padding: 11px 15px; font-family: var(--mono);
-      font-size: 13px; color: var(--text-dim); vertical-align: middle;
-    }
-    tr.opt { background: rgba(0,255,163,0.05); }
-    tr.opt td:first-child { color: var(--green); font-weight: 600; }
-    tr.bad { background: rgba(255,77,109,0.04); }
-    tr.bad td:first-child { color: var(--red); }
-    tr.wrn { background: rgba(255,209,102,0.04); }
-    tr.wrn td:first-child { color: var(--yellow); }
-    .n  { color: var(--text); }
-    .ng { color: var(--green); font-weight: 600; }
-    .nr { color: var(--red); }
-    .ny { color: var(--yellow); }
-    .nd { color: var(--text-dim); }
-    .na { color: var(--accent); }
-    .sm { font-size: 11px !important; }
+    .tbl-wrap { overflow-x:auto;border-radius:var(--r);border:1px solid var(--border);margin:16px 0; }
+    table { width:100%;border-collapse:collapse; }
+    thead { background:var(--surface-2); }
+    thead th { padding:11px 15px;text-align:left;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);border-bottom:1px solid var(--border);white-space:nowrap; }
+    tbody tr { border-bottom:1px solid rgba(255,255,255,0.035);transition:background 0.2s; }
+    tbody tr:hover { background:rgba(0,220,255,0.04); }
+    tbody tr:last-child { border-bottom:none; }
+    tbody td { padding:11px 15px;font-family:var(--mono);font-size:13px;color:var(--text-dim);vertical-align:middle; }
+    tr.opt { background:rgba(0,255,163,0.05); }
+    tr.opt td:first-child { color:var(--green);font-weight:600; }
+    tr.bad { background:rgba(255,77,109,0.04); }
+    tr.bad td:first-child { color:var(--red); }
+    tr.wrn { background:rgba(255,209,102,0.04); }
+    tr.wrn td:first-child { color:var(--yellow); }
+    .n{color:var(--text)}.ng{color:var(--green);font-weight:600}.nr{color:var(--red)}.ny{color:var(--yellow)}.nd{color:var(--text-dim)}.na{color:var(--accent)}.sm{font-size:11px!important}
 
-    /* FINDING / LIMITATION CARDS */
-    .finding {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 20px 22px; margin: 20px 0;
-    }
-    .finding.green { border-left: 3px solid var(--green); }
-    .finding.yellow { border-left: 3px solid var(--yellow); }
-    .finding.red { border-left: 3px solid var(--red); }
-    .finding.blue { border-left: 3px solid var(--accent); }
-    .finding-num {
-      font-family: var(--mono); font-size: 10px; font-weight: 600;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .finding.green .finding-num { color: var(--green); }
-    .finding.yellow .finding-num { color: var(--yellow); }
-    .finding.red .finding-num { color: var(--red); }
-    .finding.blue .finding-num { color: var(--accent); }
-    .finding-title {
-      font-family: var(--display); font-size: 15px; font-weight: 700;
-      color: var(--text); margin-bottom: 10px;
-    }
-    .finding p { font-size: 14px; color: var(--text-dim); line-height: 1.7; }
-    .finding p strong { color: var(--text); }
-
-    /* IMAGE PAIR */
-    .img-pair { display: grid; grid-template-columns: 1fr 1fr; margin: 16px 0; border-radius: var(--r); overflow: hidden; border: 1px solid var(--border); }
-    .img-slot { position: relative; }
-    .img-slot img { width: 100%; display: block; }
-    .img-slot .tag {
-      position: absolute; bottom: 0; left: 0; right: 0;
-      padding: 5px 8px; background: rgba(6,9,15,0.82);
-      font-family: var(--mono); font-size: 11px; text-align: center;
-    }
+    /* FINDING CARDS */
+    .finding { background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:20px 22px;margin:20px 0; }
+    .finding.green  { border-left:3px solid var(--green); }
+    .finding.yellow { border-left:3px solid var(--yellow); }
+    .finding.red    { border-left:3px solid var(--red); }
+    .finding.blue   { border-left:3px solid var(--accent); }
+    .finding-num { font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px; }
+    .finding.green .finding-num  { color:var(--green); }
+    .finding.yellow .finding-num { color:var(--yellow); }
+    .finding.red .finding-num    { color:var(--red); }
+    .finding.blue .finding-num   { color:var(--accent); }
+    .finding-title { font-family:var(--display);font-size:15px;font-weight:700;color:var(--text);margin-bottom:10px; }
+    .finding p { font-size:14px;color:var(--text-dim);line-height:1.7; }
+    .finding p strong { color:var(--text); }
 
     /* NOTE */
-    .note {
-      display: flex; gap: 12px; align-items: flex-start;
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); padding: 13px 17px; margin: 16px 0;
-    }
-    .note p { font-size: 14px; color: var(--text-dim); line-height: 1.65; }
+    .note { display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);padding:13px 17px;margin:16px 0; }
+    .note p { font-size:14px;color:var(--text-dim);line-height:1.65; }
 
     /* DRIVE LINK */
-    .drive-link {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: var(--mono); font-size: 12px; color: var(--accent);
-      text-decoration: none; padding: 6px 12px;
-      border: 1px solid var(--border-strong); border-radius: var(--r);
-      margin: 6px 4px 6px 0; transition: all 0.2s;
-    }
-    .drive-link:hover { background: var(--accent-dim); transform: translateY(-1px); }
+    .drive-link { display:inline-flex;align-items:center;gap:8px;font-family:var(--mono);font-size:12px;color:var(--accent);text-decoration:none;padding:6px 12px;border:1px solid var(--border-strong);border-radius:var(--r);margin:4px 4px 4px 0;transition:all 0.2s; }
+    .drive-link:hover { background:var(--accent-dim);transform:translateY(-1px); }
 
-    /* CAG DEMO GRID */
-    .cag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 20px 0; }
-    .cag-card {
-      background: var(--surface); border: 1px solid var(--border);
-      border-radius: var(--r); overflow: hidden;
-      transition: border-color 0.25s, transform 0.25s;
-    }
-    .cag-card:hover { border-color: var(--border-strong); transform: translateY(-3px); }
-    .cag-head {
-      padding: 12px 16px; border-bottom: 1px solid var(--border);
-      font-family: var(--display); font-size: 13px; font-weight: 700; color: var(--text);
-    }
-    .cag-body { padding: 14px 16px; font-size: 14px; color: var(--text-dim); line-height: 1.65; }
+    /* CAG GRID */
+    .cag-grid { display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0; }
+    .cag-card { background:var(--surface);border:1px solid var(--border);border-radius:var(--r);overflow:hidden;transition:border-color 0.25s,transform 0.25s; }
+    .cag-card:hover { border-color:var(--border-strong);transform:translateY(-3px); }
+    .cag-head { padding:12px 16px;border-bottom:1px solid var(--border);font-family:var(--display);font-size:13px;font-weight:700;color:var(--text); }
+    .cag-body { padding:14px 16px;font-size:14px;color:var(--text-dim);line-height:1.65; }
 
-    /* DISCUSSION TABLE */
-    .disc-verdict { padding: 3px 8px; border-radius: 3px; font-size: 11px; font-weight: 600; font-family: var(--mono); white-space: nowrap; }
-    .dv-ok  { background: rgba(0,255,163,0.12); color: var(--green); }
-    .dv-no  { background: rgba(255,77,109,0.12); color: var(--red); }
-    .dv-new { background: rgba(0,220,255,0.1); color: var(--accent); }
+    /* DISCUSSION */
+    .disc-verdict { padding:3px 8px;border-radius:3px;font-size:11px;font-weight:600;font-family:var(--mono);white-space:nowrap; }
+    .dv-ok  { background:rgba(0,255,163,0.12);color:var(--green); }
+    .dv-new { background:rgba(0,220,255,0.1);color:var(--accent); }
 
-    /* LINEAGE CONCEPT TAGS */
-    .tag-t { background:rgba(0,220,255,0.1); color:var(--accent); font-family:var(--mono); font-size:10px; padding:3px 6px; border-radius:3px; white-space:nowrap; }
-    .tag-c { background:rgba(255,209,102,0.12); color:var(--yellow); font-family:var(--mono); font-size:10px; padding:3px 6px; border-radius:3px; white-space:nowrap; }
-    .tag-k { background:rgba(0,255,163,0.1); color:var(--green); font-family:var(--mono); font-size:10px; padding:3px 6px; border-radius:3px; white-space:nowrap; }
+    /* LINEAGE TAGS */
+    .tag-t { background:rgba(0,220,255,0.1);color:var(--accent);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;white-space:nowrap; }
+    .tag-c { background:rgba(255,209,102,0.12);color:var(--yellow);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;white-space:nowrap; }
+    .tag-k { background:rgba(0,255,163,0.1);color:var(--green);font-family:var(--mono);font-size:10px;padding:3px 6px;border-radius:3px;white-space:nowrap; }
 
     /* RESOURCES */
-    .res-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin: 20px 0; }
-    .res-link {
-      display: flex; align-items: center; gap: 14px;
-      padding: 15px 17px; background: var(--surface);
-      border: 1px solid var(--border); border-radius: var(--r);
-      text-decoration: none; color: var(--text); transition: all 0.22s;
-    }
-    .res-link:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-    .res-link .ico  { font-size: 20px; flex-shrink: 0; }
-    .res-link .r-lbl  { font-family: var(--display); font-size: 13px; font-weight: 700; }
-    .res-link .r-desc { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+    .res-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0; }
+    .res-link { display:flex;align-items:center;gap:14px;padding:15px 17px;background:var(--surface);border:1px solid var(--border);border-radius:var(--r);text-decoration:none;color:var(--text);transition:all 0.22s; }
+    .res-link:hover { border-color:var(--accent);color:var(--accent);transform:translateY(-2px); }
+    .res-link .ico { font-size:20px;flex-shrink:0; }
+    .res-link .r-lbl  { font-family:var(--display);font-size:13px;font-weight:700; }
+    .res-link .r-desc { font-size:12px;color:var(--text-muted);margin-top:2px; }
 
     /* MISC */
-    .full-img { width: 100%; display: block; border: 1px solid var(--border); border-radius: var(--r); margin: 16px 0; }
-    code { font-family: var(--mono); font-size: 12px; background: rgba(0,220,255,0.09); color: var(--accent); padding: 2px 6px; border-radius: 3px; }
-    .r2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .full-img { width:100%;display:block;border:1px solid var(--border);border-radius:var(--r);margin:16px 0; }
+    code { font-family:var(--mono);font-size:12px;background:rgba(0,220,255,0.09);color:var(--accent);padding:2px 6px;border-radius:3px; }
+    .r2 { display:grid;grid-template-columns:1fr 1fr;gap:16px; }
 
     /* FOOTER */
-    footer {
-      border-top: 1px solid var(--border); padding: 28px 48px;
-      text-align: center; font-family: var(--mono); font-size: 12px; color: var(--text-muted);
-    }
-    footer a { color: var(--accent); text-decoration: none; }
-    footer p + p { margin-top: 6px; }
+    footer { border-top:1px solid var(--border);padding:28px 48px;text-align:center;font-family:var(--mono);font-size:12px;color:var(--text-muted); }
+    footer a { color:var(--accent);text-decoration:none; }
+    footer p + p { margin-top:6px; }
 
     /* RESPONSIVE */
-    @media (max-width: 860px) {
-      nav, .hero { padding-left: 20px; padding-right: 20px; }
-      .wrap { padding-left: 20px; padding-right: 20px; }
-      .nav-links { display: none; }
-      h1.hero-title { font-size: 34px; }
-      .bento { grid-template-columns: 1fr 1fr; }
-      .r2, .cag-grid, .img-pair { grid-template-columns: 1fr; }
-      .res-grid { grid-template-columns: 1fr; }
+    @media (max-width:860px) {
+      nav,.hero{padding-left:20px;padding-right:20px}
+      .wrap{padding-left:20px;padding-right:20px}
+      .nav-links{display:none}
+      h1.hero-title{font-size:32px}
+      .bento,.vid-triple{grid-template-columns:1fr 1fr}
+      .r2,.cag-grid,.vid-pair{grid-template-columns:1fr}
+      .res-grid{grid-template-columns:1fr}
+    }
+    @media (max-width:560px) {
+      .bento,.vid-triple{grid-template-columns:1fr}
     }
   </style>
 </head>
@@ -377,25 +283,29 @@
       13 experiments on TAP-Vid DAVIS. All results code-verified against raw log files.
     </p>
     <div class="hero-btns">
-      <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="btn btn-fill">
-        🎬 View Results (Drive)
-      </a>
-      <a href="https://github.com/SohumDamani/DiffTrack-CvProject" target="_blank" class="btn btn-ghost">
-        <i class="fab fa-github"></i> GitHub Repo
-      </a>
-      <a href="https://arxiv.org/abs/2506.17220" target="_blank" class="btn btn-ghost">
-        <i class="ai ai-arxiv"></i> Original Paper
-      </a>
+      <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="btn btn-fill">🎬 View All Results on Drive</a>
+      <a href="https://github.com/SohumDamani/DiffTrack-CvProject" target="_blank" class="btn btn-ghost"><i class="fab fa-github"></i> GitHub</a>
+      <a href="https://arxiv.org/abs/2506.17220" target="_blank" class="btn btn-ghost"><i class="ai ai-arxiv"></i> Paper</a>
+    </div>
+    <!-- Hero demo video -->
+    <div class="hero-vid">
+      <video autoplay muted loop playsinline>
+        <source src="static/videos/baseline_l17_ts49_pred.mp4" type="video/mp4">
+      </video>
+      <div class="hero-vid-label">
+        <span>Baseline — Layer 17, ts=49 (paper's t=1) · Video 0 · TAP-Vid DAVIS</span>
+        <span class="badge">delta_avg = 47.0 ✓</span>
+      </div>
     </div>
   </div>
 
   <hr class="div">
 
-  <!-- KEY FINDINGS BENTO -->
+  <!-- KEY METRICS -->
   <div class="pad">
     <div class="wrap">
       <div class="lbl">Key Findings</div>
-      <h2 class="sec-title">What We Found</h2>
+      <h2 class="sec-title">What We Found — 13 Experiments</h2>
       <div class="bento">
         <div class="m-card g">
           <div class="m-num">47.0</div>
@@ -405,11 +315,11 @@
         <div class="m-card r">
           <div class="m-num">0.0</div>
           <div class="m-title">ts=1 Collapse</div>
-          <div class="m-sub">Zero across all 4 videos, all 6 metrics — complete mechanism failure</div>
+          <div class="m-sub">Complete failure across all 4 videos, all 6 metrics — mechanism destroyed</div>
         </div>
         <div class="m-card y">
-          <div class="m-num">92×</div>
-          <div class="m-title">Accuracy Degradation</div>
+          <div class="m-num">12×</div>
+          <div class="m-title">Precision Gap</div>
           <div class="m-sub">Within-1px accuracy vs within-16px — no temporal memory in the model</div>
         </div>
       </div>
@@ -418,21 +328,47 @@
 
   <hr class="div">
 
-  <!-- PART A: PARAMETER STUDY -->
+  <!-- PART A -->
   <div class="pad" id="part-a">
     <div class="wrap">
       <div class="lbl">Part A</div>
       <h2 class="sec-title">Parameter Study: Strengths</h2>
-      <p class="body-text">
-        Systematic ablation over attention layer and diffusion timestep to identify the operating
-        envelope of zero-shot correspondence. All runs: CogVideoX-2B, TAP-Vid DAVIS.
-      </p>
+      <p class="body-text">Systematic ablation over attention layer and diffusion timestep. All runs: CogVideoX-2B, TAP-Vid DAVIS, tracking videos below are side-by-side comparisons.</p>
 
-      <!-- Exp 1: Layer -->
+      <!-- EXP 1: LAYER -->
       <h3 class="sub-heading">Experiment 1 — Attention Layer Selection</h3>
-      <p class="body-text" style="margin-bottom:14px;">
-        Tested 5 layers at <code>ts=49</code> (paper's t=1) across 4 DAVIS videos.
-      </p>
+      <p class="body-text" style="margin-bottom:18px;">Tested layers 5, 8, 17, 27, 29 at <code>ts=49</code> across 4 DAVIS videos. Each video shows predicted trajectories overlaid on real video.</p>
+
+      <div class="vid-triple">
+        <div class="vid-card r">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/layer5_shallow_pred.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">Layer 5 — shallow</span>
+            <span class="vl-val">31.3</span>
+          </div>
+        </div>
+        <div class="vid-card g">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/baseline_l17_ts49_pred_001.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">Layer 17 ★ optimal</span>
+            <span class="vl-val">47.0</span>
+          </div>
+        </div>
+        <div class="vid-card y">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/layer8_positional_pred.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">Layer 8 — pos. bias</span>
+            <span class="vl-val">41.9</span>
+          </div>
+        </div>
+      </div>
+
       <div class="tbl-wrap">
         <table>
           <thead>
@@ -443,61 +379,69 @@
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="nd">l=5</td><td class="nd">Shallow</td><td class="nd">2</td>
-              <td class="n">31.3</td><td class="nd">0.8</td><td class="nd">51.7</td><td class="nd">73.8</td>
-              <td class="nd sm">Spatial detail, lacks semantics</td>
-            </tr>
-            <tr class="wrn">
-              <td>l=8</td><td class="nd">Early-mid</td><td class="nd">4</td>
-              <td class="n">41.9</td><td class="nd">2.9</td><td class="nd">72.8</td><td class="nd">84.3</td>
-              <td class="ny sm">RoPE positional bias (Fig 6)</td>
-            </tr>
-            <tr class="opt">
-              <td>l=17 ★</td><td class="nd">Mid (optimal)</td><td class="nd">2</td>
-              <td class="ng">47.0</td><td class="n">7.0</td><td class="n">74.6</td><td class="n">81.2</td>
-              <td class="ng sm">Paper default — best performing</td>
-            </tr>
-            <tr>
-              <td class="nd">l=27</td><td class="nd">Deep</td><td class="nd">2</td>
-              <td class="n">37.0</td><td class="nd">3.7</td><td class="nd">57.5</td><td class="nd">73.8</td>
-              <td class="nd sm">Semantic abstraction over-dominates</td>
-            </tr>
-            <tr class="wrn">
-              <td>l=29</td><td class="nd">Near-final</td><td class="nd">4</td>
-              <td class="n">38.0</td><td class="nd">3.8</td><td class="nd">61.4</td><td class="nd">77.2</td>
-              <td class="ny sm">Diffuse attention (Fig A.18)</td>
-            </tr>
+            <tr><td class="nd">l=5</td><td class="nd">Shallow</td><td class="nd">2</td><td class="n">31.3</td><td class="nd">0.8</td><td class="nd">51.7</td><td class="nd">73.8</td><td class="nd sm">Lacks semantic abstraction</td></tr>
+            <tr class="wrn"><td>l=8</td><td class="nd">Early-mid</td><td class="nd">4</td><td class="n">41.9</td><td class="nd">2.9</td><td class="nd">72.8</td><td class="nd">84.3</td><td class="ny sm">RoPE positional bias (Fig 6)</td></tr>
+            <tr class="opt"><td>l=17 ★</td><td class="nd">Mid (optimal)</td><td class="nd">2</td><td class="ng">47.0</td><td class="n">7.0</td><td class="n">74.6</td><td class="n">81.2</td><td class="ng sm">Paper default — confirmed best</td></tr>
+            <tr><td class="nd">l=27</td><td class="nd">Deep</td><td class="nd">2</td><td class="n">37.0</td><td class="nd">3.7</td><td class="nd">57.5</td><td class="nd">73.8</td><td class="nd sm">Semantic over-abstraction</td></tr>
+            <tr class="wrn"><td>l=29</td><td class="nd">Near-final</td><td class="nd">4</td><td class="n">38.0</td><td class="nd">3.8</td><td class="nd">61.4</td><td class="nd">77.2</td><td class="ny sm">Diffuse attention (Fig A.18)</td></tr>
           </tbody>
         </table>
       </div>
 
-      <div class="r2">
-        <div>
-          <img src="static/images/student_layer_chart.png" class="full-img" alt="Layer ablation bar chart">
+      <div class="r2" style="margin-top:18px;">
+        <img src="static/images/student_layer_chart.png" class="full-img" alt="Layer ablation bar chart" style="margin:0;">
+        <div class="finding green" style="margin:0;">
+          <div class="finding-num">Finding 1</div>
+          <div class="finding-title">Layer 17 is the optimal correspondence layer</div>
+          <p>Mid-network layers balance spatial precision with semantic structure. Shallow layers lack temporal feature abstraction; deep layers over-smooth spatial detail. Layer 17 confirmed as the paper's best recommendation across all 5 layers tested.</p>
         </div>
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div class="finding green">
-            <div class="finding-num">Finding 1</div>
-            <div class="finding-title">Layer 17 is the optimal correspondence layer</div>
-            <p>Mid-network layers balance spatial precision with learned semantic structure. Shallow layers (l=5) lack temporal feature abstraction; deep layers (l=27, 29) over-smooth spatial detail. Layer 17 is confirmed as the paper's best recommendation.</p>
+      </div>
+
+      <!-- EXP 2: TIMESTEP -->
+      <h3 class="sub-heading">Experiment 2 — Diffusion Timestep Selection</h3>
+      <p class="body-text" style="margin-bottom:18px;">Full sweep at <code>layer=17</code> — from near-noise (ts=1) to near-clean (ts=49). Watch the trajectory quality change across the curve.</p>
+
+      <div class="vid-pair">
+        <div class="vid-card r">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/fail_ts1_pred.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">ts=1 (scheduler t=980)</span>
+            <span class="vl-val">0.0 ❌</span>
           </div>
-          <div class="note">
-            <span style="font-size:16px;flex-shrink:0;padding-top:1px;">📺</span>
-            <p>
-              <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="drive-link">Layer 5 — delta_avg 31.3 ↗</a>
-              <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="drive-link">Layer 17 — delta_avg 47.0 ↗</a>
-              <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="drive-link">Layer 27 — delta_avg 37.0 ↗</a>
-            </p>
+        </div>
+        <div class="vid-card y">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/degraded_ts10_pred.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">ts=10 — steep degradation</span>
+            <span class="vl-val">13.1</span>
+          </div>
+        </div>
+      </div>
+      <div class="vid-pair">
+        <div class="vid-card g">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/plateau_ts30_pred.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">ts=30 — plateau zone</span>
+            <span class="vl-val">47.8</span>
+          </div>
+        </div>
+        <div class="vid-card g">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/baseline_l17_ts49_pred.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">ts=49 ★ paper default</span>
+            <span class="vl-val">47.0</span>
           </div>
         </div>
       </div>
 
-      <!-- Exp 2: Timestep -->
-      <h3 class="sub-heading">Experiment 2 — Diffusion Timestep Selection</h3>
-      <p class="body-text" style="margin-bottom:14px;">
-        Tested 6 timesteps at <code>layer=17</code> — full sweep from near-noise (ts=1) to near-clean (ts=49).
-      </p>
       <div class="tbl-wrap">
         <table>
           <thead>
@@ -508,122 +452,79 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="bad">
-              <td>ts=1</td><td class="nd">t≈49</td><td class="n">980</td>
-              <td class="nr">0.0</td><td class="nd">0.0</td><td class="nd">0.0</td><td class="nd">0.0</td>
-              <td class="nr sm">Complete failure</td>
-            </tr>
-            <tr class="bad">
-              <td>ts=5</td><td class="nd">t≈45</td><td class="n">900</td>
-              <td class="nr">0.8</td><td class="nd">0.0</td><td class="nd">0.4</td><td class="nd">3.5</td>
-              <td class="nr sm">Near-total failure</td>
-            </tr>
-            <tr>
-              <td class="nd">ts=10</td><td class="nd">t≈40</td><td class="n">800</td>
-              <td class="n">13.1</td><td class="nd">0.1</td><td class="nd">17.6</td><td class="nd">41.9</td>
-              <td class="nd sm">−72% vs baseline</td>
-            </tr>
-            <tr>
-              <td class="nd">ts=20</td><td class="nd">t≈30</td><td class="n">600</td>
-              <td class="n">33.4</td><td class="nd">1.5</td><td class="nd">52.3</td><td class="nd">82.6</td>
-              <td class="nd sm">−29% vs baseline</td>
-            </tr>
-            <tr>
-              <td class="nd">ts=30</td><td class="nd">t=20</td><td class="n">400</td>
-              <td class="n">47.8</td><td class="nd">6.5</td><td class="nd">73.8</td><td class="nd">80.9</td>
-              <td class="nd sm">In plateau with ts=49</td>
-            </tr>
-            <tr class="opt">
-              <td>ts=49 ★</td><td class="nd">t=1</td><td class="n">20</td>
-              <td class="ng">47.0</td><td class="n">7.0</td><td class="n">74.6</td><td class="n">81.2</td>
-              <td class="ng sm">Paper default — confirmed</td>
-            </tr>
+            <tr class="bad"><td>ts=1</td><td class="nd">t≈49</td><td class="n">980</td><td class="nr">0.0</td><td class="nd">0.0</td><td class="nd">0.0</td><td class="nd">0.0</td><td class="nr sm">Complete failure</td></tr>
+            <tr class="bad"><td>ts=5</td><td class="nd">t≈45</td><td class="n">900</td><td class="nr">0.8</td><td class="nd">0.0</td><td class="nd">0.4</td><td class="nd">3.5</td><td class="nr sm">Near-total failure</td></tr>
+            <tr><td class="nd">ts=10</td><td class="nd">t≈40</td><td class="n">800</td><td class="n">13.1</td><td class="nd">0.1</td><td class="nd">17.6</td><td class="nd">41.9</td><td class="nd sm">−72% vs baseline</td></tr>
+            <tr><td class="nd">ts=20</td><td class="nd">t≈30</td><td class="n">600</td><td class="n">33.4</td><td class="nd">1.5</td><td class="nd">52.3</td><td class="nd">82.6</td><td class="nd sm">−29% vs baseline</td></tr>
+            <tr><td class="nd">ts=30</td><td class="nd">t=20</td><td class="n">400</td><td class="n">47.8</td><td class="nd">6.5</td><td class="nd">73.8</td><td class="nd">80.9</td><td class="nd sm">In plateau with ts=49</td></tr>
+            <tr class="opt"><td>ts=49 ★</td><td class="nd">t=1</td><td class="n">20</td><td class="ng">47.0</td><td class="n">7.0</td><td class="n">74.6</td><td class="n">81.2</td><td class="ng sm">Paper default — confirmed</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="r2" style="margin-top:16px;">
-        <img src="static/images/student_timestep_curve.png" class="full-img" alt="Timestep sensitivity curve">
-        <div style="display:flex;flex-direction:column;gap:12px;">
-          <div class="finding green">
-            <div class="finding-num">Finding 2</div>
-            <div class="finding-title">Confirmed plateau at ts=30–49; sharp cliff below ts=10</div>
-            <p>The curve independently replicates paper Figure 4(c). There is a <strong>noise sweet spot</strong> in the ts=30–49 range. Below ts=10, cross-frame attention collapses rapidly. The paper's ts=49 recommendation sits at the top of the plateau.</p>
-          </div>
-          <div class="note">
-            <span style="font-size:16px;flex-shrink:0;padding-top:1px;">📺</span>
-            <p>
-              <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="drive-link">ts=10 — delta_avg 13.1 ↗</a>
-              <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="drive-link">ts=30 — delta_avg 47.8 ↗</a>
-              <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="drive-link">ts=49 — delta_avg 47.0 ↗</a>
-            </p>
-          </div>
+        <img src="static/images/student_timestep_curve.png" class="full-img" alt="Timestep sensitivity curve" style="margin:0;">
+        <div class="finding green" style="margin:0;">
+          <div class="finding-num">Finding 2</div>
+          <div class="finding-title">Plateau at ts=30–49; sharp cliff below ts=10</div>
+          <p>Independently replicates paper Figure 4(c). The noise sweet spot is ts=30–49. Below ts=10, cross-frame attention collapses rapidly. Paper's ts=49 sits at the top of the confirmed plateau.</p>
         </div>
       </div>
 
-      <!-- Exp 3: Chunking -->
+      <!-- EXP 3: CHUNKING -->
       <h3 class="sub-heading">Experiment 3 — Temporal Chunk Frame Interval</h3>
-      <p class="body-text" style="margin-bottom:14px;">
-        Tested whether the sliding-window chunking strategy materially affects tracking accuracy.
-      </p>
       <div class="tbl-wrap">
         <table>
-          <thead>
-            <tr><th>Configuration</th><th>delta_avg ↑</th><th>Difference</th><th>Note</th></tr>
-          </thead>
+          <thead><tr><th>Configuration</th><th>delta_avg ↑</th><th>Difference</th></tr></thead>
           <tbody>
-            <tr class="opt">
-              <td>Layer 17, ts=49 — with chunk_frame_interval ★</td>
-              <td class="ng">47.0</td>
-              <td class="nd">Baseline</td>
-              <td class="ng sm">Paper default</td>
-            </tr>
-            <tr>
-              <td class="nd">Layer 17, ts=49 — no chunk_frame_interval</td>
-              <td class="n">46.4</td>
-              <td class="nd">−0.6</td>
-              <td class="nd sm">Marginal, within noise</td>
-            </tr>
+            <tr class="opt"><td>Layer 17, ts=49 — with chunk_frame_interval ★</td><td class="ng">47.0</td><td class="nd">Baseline</td></tr>
+            <tr><td class="nd">Layer 17, ts=49 — no chunk_frame_interval</td><td class="n">46.4</td><td class="nd">−0.6 (marginal)</td></tr>
           </tbody>
         </table>
       </div>
       <div class="finding blue">
         <div class="finding-num">Finding 3</div>
         <div class="finding-title">Chunking makes virtually no difference</div>
-        <p>A 0.6-point gap between chunked and unchunked is within small-sample noise. The windowing heuristic cannot fix the method's fundamental lack of temporal memory — <strong>each frame is independently matched against frame 0</strong> regardless of the chunking strategy.</p>
+        <p>A 0.6-point gap is within small-sample noise. The windowing heuristic cannot fix the fundamental lack of temporal memory — <strong>each frame is independently matched against frame 0</strong> regardless of chunking strategy.</p>
       </div>
     </div>
   </div>
 
   <hr class="div">
 
-  <!-- PART B: LIMITATIONS -->
+  <!-- PART B -->
   <div class="pad" id="part-b">
     <div class="wrap">
       <div class="lbl">Part B</div>
       <h2 class="sec-title">Limitations Analysis</h2>
-      <p class="body-text">
-        Three failure modes, each tied to explicit paper figures, quantified via controlled ablation experiments.
-      </p>
+      <p class="body-text">Three failure modes, each tied to explicit paper figures, with video evidence.</p>
 
-      <!-- Lim 1: ts=1 -->
+      <!-- LIM 1: ts=1 -->
       <h3 class="sub-heading">Limitation 1 — Hard Dependency on Diffusion Noise</h3>
-      <div class="img-pair">
-        <div class="img-slot">
-          <img src="static/images/student_track_good.png" alt="ts=49 tracking works">
-          <div class="tag" style="color:var(--green);">ts=49 (paper t=1) · delta_avg = 47.0 ✅</div>
+      <div class="vid-pair">
+        <div class="vid-card g">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/baseline_l17_ts49_pred.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">ts=49 · paper t=1 · WORKING</span>
+            <span class="vl-val">47.0 ✓</span>
+          </div>
         </div>
-        <div class="img-slot">
-          <img src="static/images/student_track_fail.png" alt="ts=1 complete failure">
-          <div class="tag" style="color:var(--red);">ts=1 (scheduler t=980) · delta_avg = 0.0 ❌</div>
+        <div class="vid-card r">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/fail_ts1_pred.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">ts=1 · scheduler t=980 · FAILED</span>
+            <span class="vl-val">0.0 ✗</span>
+          </div>
         </div>
       </div>
 
       <div class="tbl-wrap">
         <table>
-          <thead>
-            <tr><th>Video</th><th>Frames</th><th>delta_avg</th><th>delta_1</th><th>delta_8</th><th>delta_16</th></tr>
-          </thead>
+          <thead><tr><th>Video</th><th>Frames</th><th>delta_avg</th><th>delta_1</th><th>delta_8</th><th>delta_16</th></tr></thead>
           <tbody>
             <tr class="bad"><td>Video 0</td><td class="nd">69</td><td class="nr">0.00</td><td class="nd">0.00</td><td class="nd">0.00</td><td class="nd">0.00</td></tr>
             <tr class="bad"><td>Video 1</td><td class="nd">50</td><td class="nr">0.00</td><td class="nd">0.00</td><td class="nd">0.00</td><td class="nd">0.00</td></tr>
@@ -635,37 +536,36 @@
 
       <div class="finding red">
         <div class="finding-num">Limitation 1</div>
-        <div class="finding-title">Without noise, correspondence collapses entirely</div>
-        <p>Every metric is zero across all four test videos. The correspondence signal is emergent from the denoising process itself — remove it and there is nothing to track.
-        At <code>ts=1</code>, the pipeline feeds <strong>clean VAE latents</strong> to a transformer conditioned at <strong>t=980</strong> (near-maximum noise). The model expects heavily-noisy latents at t=980; receiving clean latents creates a distribution mismatch that destroys all feature correspondences.</p>
+        <div class="finding-title">Without noise, correspondence collapses — zero across all 4 videos</div>
+        <p>The pipeline feeds <strong>clean VAE latents</strong> to a transformer conditioned at <strong>t=980</strong> (near-maximum noise). Distribution mismatch destroys all feature correspondences. Correspondence is emergent from denoising — it was never explicitly trained. Remove the noise and there is nothing to track.</p>
       </div>
 
-      <div class="note">
-        <span style="font-size:16px;flex-shrink:0;padding-top:1px;">📺</span>
-        <p>
-          <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="drive-link">ts=1 — Complete failure (4 videos) ↗</a>
-          <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="drive-link">ts=49 — Best config for comparison ↗</a>
-        </p>
-      </div>
-
-      <!-- Lim 2: Layer sensitivity -->
+      <!-- LIM 2: LAYER SENSITIVITY -->
       <h3 class="sub-heading">Limitation 2 — Layer Sensitivity and Selection Brittleness</h3>
-      <div class="img-pair">
-        <div class="img-slot">
-          <img src="static/images/student_track_l8.png" alt="Layer 8 positional bias">
-          <div class="tag" style="color:var(--yellow);">l=8 · delta_avg = 41.9 ⚠️ Positional bias</div>
+      <div class="vid-pair">
+        <div class="vid-card y">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/layer8_positional_pred.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">Layer 8 — positional bias</span>
+            <span class="vl-val">41.9 ⚠️</span>
+          </div>
         </div>
-        <div class="img-slot">
-          <img src="static/images/student_track_l29.png" alt="Layer 29 diffuse attention">
-          <div class="tag" style="color:var(--yellow);">l=29 · delta_avg = 38.0 ⚠️ Diffuse attention</div>
+        <div class="vid-card y">
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/layer29_diffuse_pred.mp4" type="video/mp4">
+          </video>
+          <div class="vid-label">
+            <span class="vl-name">Layer 29 — diffuse attention</span>
+            <span class="vl-val">38.0 ⚠️</span>
+          </div>
         </div>
       </div>
 
       <div class="tbl-wrap">
         <table>
-          <thead>
-            <tr><th>Layer</th><th>delta_avg ↑</th><th>delta_1</th><th>delta_16</th><th>Relative to l=17</th><th>Paper Reference</th></tr>
-          </thead>
+          <thead><tr><th>Layer</th><th>delta_avg ↑</th><th>delta_1</th><th>delta_16</th><th>vs l=17</th><th>Paper Reference</th></tr></thead>
           <tbody>
             <tr><td class="nd">l=5</td><td class="n">31.3</td><td class="nd">0.8</td><td class="nd">73.8</td><td class="nr sm">−33%</td><td class="nd sm">Shallow</td></tr>
             <tr class="wrn"><td>l=8</td><td class="n">41.9</td><td class="nd">2.9</td><td class="nd">84.3</td><td class="ny sm">−11%</td><td class="ny sm">Fig 6 — positional bias</td></tr>
@@ -678,80 +578,67 @@
 
       <div class="finding yellow">
         <div class="finding-num">Limitation 2</div>
-        <div class="finding-title">Performance varies by 16+ points across layers — with no selection criterion</div>
-        <p>Layer 8 matches objects at the same spatial position due to RoPE positional embeddings dominating (paper Figure 6). Layer 29 shows diffuse, scattered attention (paper Figure A.18). Fine-grained spatial precision favors mid-network layers, but the paper provides no empirical guide for layer selection on a new domain or architecture.</p>
+        <div class="finding-title">Performance spans 16+ points across layers — with no selection criterion</div>
+        <p>Layer 8 matches objects at the same spatial position (RoPE positional embeddings dominate, paper Figure 6). Layer 29 shows diffuse, scattered attention (paper Figure A.18). The paper provides no empirical guide for layer selection on a new domain or architecture.</p>
       </div>
 
-      <!-- Lim 3: Temporal degradation -->
-      <h3 class="sub-heading">Limitation 3 — No Temporal Memory: Accuracy-vs-Threshold Analysis</h3>
-      <p class="body-text" style="margin-bottom:14px;">
-        Accuracy drops sharply at tight thresholds — revealing the method's lack of any motion model, velocity estimate, or trajectory history.
-      </p>
+      <!-- LIM 3: TEMPORAL PRECISION -->
+      <h3 class="sub-heading">Limitation 3 — No Temporal Memory: Precision Degrades 12× Across Thresholds</h3>
       <div class="tbl-wrap">
         <table>
-          <thead>
-            <tr><th>Threshold</th><th>% Points Correct ↑</th><th>Interpretation</th><th>Relative to δ₁</th></tr>
-          </thead>
+          <thead><tr><th>Threshold</th><th>% Points Correct ↑</th><th>Interpretation</th><th>Relative to δ₁</th></tr></thead>
           <tbody>
-            <tr><td class="na">delta_1 (within 1px)</td><td class="ng">7.0%</td><td class="nd">Very precise — nearly impossible</td><td class="nd sm">1×</td></tr>
+            <tr><td class="na">delta_1 (within 1px)</td><td class="ng">7.0%</td><td class="nd">Sub-pixel precision — very difficult</td><td class="nd sm">1×</td></tr>
             <tr><td class="nd">delta_2 (within 2px)</td><td class="n">~15%</td><td class="nd">High precision</td><td class="nd sm">~2×</td></tr>
             <tr><td class="nd">delta_4 (within 4px)</td><td class="n">~35%</td><td class="nd">Moderate precision</td><td class="nd sm">~5×</td></tr>
             <tr><td class="nd">delta_8 (within 8px)</td><td class="n">74.6%</td><td class="nd">Coarse tracking</td><td class="nd sm">~11×</td></tr>
-            <tr class="wrn"><td>delta_16 (within 16px)</td><td class="ny">81.2%</td><td class="nd">Very coarse — large tolerance</td><td class="ny sm">~12×</td></tr>
+            <tr class="wrn"><td>delta_16 (within 16px)</td><td class="ny">81.2%</td><td class="nd">Very coarse tolerance</td><td class="ny sm">~12×</td></tr>
           </tbody>
         </table>
       </div>
 
       <div class="finding red">
         <div class="finding-num">Limitation 3</div>
-        <div class="finding-title">Precision collapses at tight thresholds — no motion continuity</div>
-        <p>Only 7% of predictions land within 1 pixel, versus 81% within 16 pixels — a <strong>12× accuracy spread across thresholds</strong>. The method independently matches each frame against frame 0 with no motion model or velocity estimate. Without trajectory history, drift compounds over long sequences — the method is a one-shot matcher, not a tracker in the classical sense.</p>
-      </div>
-
-      <div class="note">
-        <span style="font-size:16px;flex-shrink:0;padding-top:1px;">📺</span>
-        <p>
-          <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="drive-link">Layer 8 — positional bias videos ↗</a>
-          <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="drive-link">Layer 29 — diffuse attention videos ↗</a>
-        </p>
+        <div class="finding-title">12× accuracy spread — no motion model, no trajectory history</div>
+        <p>Only 7% of predictions land within 1 pixel vs 81% within 16 pixels. The method independently matches each frame against frame 0 with no velocity estimate or trajectory history. <strong>Without temporal continuity, drift compounds over long sequences</strong> — the method is a one-shot frame matcher, not a tracker in the classical sense.</p>
       </div>
     </div>
   </div>
 
   <hr class="div">
 
-  <!-- PART C: CAG DEMO -->
+  <!-- PART C: CAG -->
   <div class="pad" id="part-c">
     <div class="wrap">
       <div class="lbl">Part C</div>
       <h2 class="sec-title">CAG Motion Guidance Demo</h2>
-      <p class="body-text" style="margin-bottom:28px;">
-        Cross-Frame Attention Guidance (CAG) repurposes the same correspondence mechanism for
-        zero-shot motion transfer — no fine-tuning, no labels, same frozen model.
-      </p>
+      <p class="body-text" style="margin-bottom:28px;">Cross-Frame Attention Guidance repurposes the same correspondence mechanism for zero-shot motion transfer — same frozen model, no fine-tuning, no labels.</p>
 
       <div class="cag-grid">
         <div class="cag-card">
-          <div class="cag-head" style="border-left:3px solid var(--text-dim);">PAG Strength = 0 — Baseline Generation</div>
+          <div class="cag-head">PAG Strength = 0 — No Guidance</div>
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/cag_pag0.mp4" type="video/mp4">
+          </video>
           <div class="cag-body">
-            <p>No cross-frame attention guidance applied. Produces plausible but <strong>uncontrolled motion</strong>. The video DiT generates frames independently without any external motion prior. No trajectory is injected.</p>
-            <br>
-            <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="drive-link">Open pag_scale=0 videos in Drive ↗</a>
+            Baseline generation with no cross-frame attention injection. Video DiT generates plausible but <strong>uncontrolled motion</strong> — no source trajectory is applied.
           </div>
         </div>
-        <div class="cag-card" style="border-left:3px solid var(--accent);">
-          <div class="cag-head" style="border-left:none;">PAG Strength = 1 — With CAG Applied</div>
+        <div class="cag-card" style="border-top:2px solid var(--accent);">
+          <div class="cag-head">PAG Strength = 1 — With CAG Applied</div>
+          <video autoplay muted loop playsinline>
+            <source src="static/videos/cag_pag1.mp4" type="video/mp4">
+          </video>
           <div class="cag-body">
-            <p>Cross-frame attention keys/values from a reference video replace those in the target generation during denoising. This <strong>injects the reference video's motion pattern</strong> without any finetuning or labels. Motion transfer is visible and steered by source trajectories.</p>
-            <a href="https://drive.google.com/drive/folders/1XM9ZF2WiHAUeXJieYLo7NUz8q9MpGAOv?usp=sharing" target="_blank" class="drive-link">Open pag_scale=1 videos in Drive ↗</a>
+            During denoising, cross-frame keys/values from a reference video replace those in the target. This <strong>injects the reference motion pattern</strong> — same attention maps that track points now transfer motion.
           </div>
         </div>
       </div>
 
       <div class="finding blue">
         <div class="finding-num">Key Insight</div>
-        <div class="finding-title">Same attention maps — two applications</div>
-        <p>The same cross-frame query-key attention that enables zero-shot point tracking also enables zero-shot motion transfer. CAG demonstrates the generality of the correspondence mechanism: it is not a tracking-specific artifact but a fundamental property of how video DiTs organize temporal information.</p>
+        <div class="finding-title">Same attention maps — two applications: tracking and motion transfer</div>
+        <p>The cross-frame query-key attention that enables zero-shot point tracking also enables zero-shot motion transfer. CAG demonstrates the generality of the correspondence mechanism — it is a fundamental property of how video DiTs organize temporal information, not a tracking-specific artifact.</p>
       </div>
     </div>
   </div>
@@ -762,64 +649,59 @@
   <div class="pad" id="discussion">
     <div class="wrap">
       <div class="lbl">Discussion</div>
-      <h2 class="sec-title">Confirmed vs. Findings</h2>
-      <p class="body-text" style="margin-bottom:28px;">
-        Summary of which paper claims our experiments confirm, which we add nuance to,
-        and what new findings emerge from the ablations.
-      </p>
+      <h2 class="sec-title">Confirmed vs. New Findings</h2>
+      <p class="body-text" style="margin-bottom:28px;">Summary of what our experiments confirm from the paper and what new findings they add.</p>
 
       <div class="tbl-wrap" style="margin-bottom:36px;">
         <table>
-          <thead>
-            <tr><th style="width:30%">Paper Claim</th><th style="width:32%">Our Finding</th><th style="width:38%">Detail</th><th>Verdict</th></tr>
-          </thead>
+          <thead><tr><th style="width:30%">Paper Claim</th><th style="width:32%">Our Finding</th><th style="width:30%">Detail</th><th>Verdict</th></tr></thead>
           <tbody>
             <tr>
               <td class="n">ts=49 is the optimal timestep</td>
-              <td class="nd">ts=49 and ts=30 form an effective plateau</td>
-              <td class="nd sm">Both produce 47–48 delta_avg. ts=49 is confirmed at the top. Effective range: ts=30–49.</td>
-              <td><span class="disc-verdict dv-ok">Confirmed + nuance</span></td>
+              <td class="nd">ts=49 and ts=30 form a plateau; ts=49 confirmed at top</td>
+              <td class="nd sm">Both produce 47–48 delta_avg. Effective range: ts=30–49.</td>
+              <td><span class="disc-verdict dv-ok">Confirmed</span></td>
             </tr>
             <tr>
               <td class="n">Layer 17 is the recommended layer</td>
-              <td class="nd">Layer 17 is confirmed best across 5 layers tested</td>
-              <td class="nd sm">47.0 vs 41.9 (l=8), 38.0 (l=29), 37.0 (l=27), 31.3 (l=5). Paper default holds.</td>
+              <td class="nd">Layer 17 is confirmed best across all 5 layers tested</td>
+              <td class="nd sm">47.0 vs 41.9 (l=8), 38.0 (l=29), 37.0 (l=27), 31.3 (l=5)</td>
               <td><span class="disc-verdict dv-ok">Confirmed</span></td>
             </tr>
             <tr>
               <td class="n">Diffusion features enable zero-shot tracking</td>
-              <td class="nd">Confirmed — strong delta_1 at optimal settings</td>
-              <td class="nd sm">delta_avg=47.0 reproduces paper's 46.3 on 30 videos to within 1.5%.</td>
+              <td class="nd">Confirmed — delta_avg 47.0 vs paper's 46.3</td>
+              <td class="nd sm">Within 1.5% on 2-video sample vs paper's 30-video eval.</td>
               <td><span class="disc-verdict dv-ok">Confirmed</span></td>
             </tr>
             <tr>
               <td class="n">ts=1 fails completely</td>
-              <td class="nd">Confirmed — every metric is 0.0 across 4 videos</td>
-              <td class="nd sm">Distribution mismatch: clean latents at t=980 conditioning. Paper Figure 4(c).</td>
+              <td class="nd">Confirmed — 0.0 across all 4 videos, all metrics</td>
+              <td class="nd sm">Distribution mismatch: clean latents at t=980 conditioning.</td>
               <td><span class="disc-verdict dv-ok">Confirmed</span></td>
             </tr>
             <tr>
-              <td class="n">Layer 8 has positional bias</td>
+              <td class="n">Layer 8 positional bias (Fig 6)</td>
               <td class="nd">Confirmed — 41.9 vs 47.0 baseline, −11%</td>
-              <td class="nd sm">RoPE embeddings dominate. Paper Figure 6 explicitly names this.</td>
+              <td class="nd sm">RoPE embeddings dominate. Paper explicitly names this.</td>
               <td><span class="disc-verdict dv-ok">Confirmed</span></td>
             </tr>
             <tr>
-              <td class="n">Layer 29 is a bottom-3 layer</td>
+              <td class="n">Layer 29 diffuse attention (Fig A.18)</td>
               <td class="nd">Confirmed — 38.0 vs 47.0, −19%</td>
-              <td class="nd sm">Diffuse, scattered attention. Paper Figure A.18 names l=8, 24, 29.</td>
+              <td class="nd sm">Paper names l=8, 24, 29 as bottom-3 layers.</td>
               <td><span class="disc-verdict dv-ok">Confirmed</span></td>
             </tr>
             <tr>
               <td class="n">Chunking improves temporal consistency</td>
-              <td class="nd">Marginal — 47.0 vs 46.4, only 0.6 delta_avg</td>
-              <td class="nd sm">The windowing heuristic cannot overcome the lack of temporal memory.</td>
-              <td><span class="disc-verdict dv-new">Nuanced finding</span></td>
+              <td class="nd">Marginal — only 0.6 delta_avg difference</td>
+              <td class="nd sm">Windowing cannot overcome lack of temporal memory.</td>
+              <td><span class="disc-verdict dv-new">New nuance</span></td>
             </tr>
             <tr>
               <td class="n">Method is fully unsupervised</td>
               <td class="nd">Confirmed — zero labels, zero training required</td>
-              <td class="nd sm">All 13 experiments run zero-shot on a frozen model.</td>
+              <td class="nd sm">All 13 experiments zero-shot on a frozen model.</td>
               <td><span class="disc-verdict dv-ok">Confirmed</span></td>
             </tr>
           </tbody>
@@ -831,23 +713,23 @@
         <div class="finding red">
           <div class="finding-num">Root Cause 1 — Noise Dependency</div>
           <div class="finding-title">Correspondence is emergent, not designed</div>
-          <p>Tracking works because denoising at ts=30–49 creates temporally-coherent attention maps as a side effect. Too little noise (ts≤5) collapses the mechanism; the model was never explicitly trained to track anything.</p>
+          <p>Tracking works because denoising at ts=30–49 creates temporally-coherent attention maps as a side effect. The model was never explicitly trained to track — too little noise (ts≤5) collapses the mechanism entirely.</p>
         </div>
         <div class="finding yellow">
           <div class="finding-num">Root Cause 2 — No Temporal Memory</div>
-          <div class="finding-title">Frame-0 independent matching</div>
-          <p>Every frame is matched against frame 0 independently. There is no velocity estimate, motion prior, or trajectory history. Precision degrades by 12× from 1px to 16px threshold — the model accumulates no context about where a point has been.</p>
+          <div class="finding-title">Frame-0 independent matching only</div>
+          <p>Every frame is matched against frame 0 independently — no velocity estimate, no motion prior, no trajectory history. Precision degrades 12× from 1px to 16px threshold with no way to recover accumulated drift.</p>
         </div>
       </div>
 
-      <h3 class="sub-heading">New Findings Beyond Original Paper</h3>
+      <h3 class="sub-heading">New Findings Beyond the Paper</h3>
       <div class="finding blue">
         <div class="finding-num">New Findings</div>
-        <div class="finding-title">What we add to the paper's analysis</div>
+        <div class="finding-title">What we add beyond the paper's analysis</div>
         <p>
-          <strong style="color:var(--text);">Plateau framing:</strong> ts=30–49 form an effective operating plateau — the 0.8-point difference between ts=30 and ts=49 is within small-sample noise, not a meaningful peak.<br><br>
-          <strong style="color:var(--text);">Noise floor:</strong> There is a hard noise floor at ts≤5 below which the tracker fails as completely as at ts=1. The failure cliff is sharp — ts=10 gives 13.1, ts=5 gives 0.8.<br><br>
-          <strong style="color:var(--text);">Threshold-accuracy spread:</strong> The 12× accuracy gap between delta_1 and delta_16 is not discussed in the paper; it reveals the method's fundamental precision ceiling for real-world applications requiring sub-pixel accuracy.
+          <strong style="color:var(--text);">Plateau framing:</strong> ts=30–49 form an effective operating plateau — the 0.8-point difference is within small-sample noise, not a meaningful peak.<br><br>
+          <strong style="color:var(--text);">Hard noise floor:</strong> A sharp failure cliff at ts≤5 — ts=10 gives 13.1, ts=5 gives 0.8. Below this floor the tracker fails as completely as at ts=1.<br><br>
+          <strong style="color:var(--text);">Threshold-accuracy spread:</strong> The 12× gap between delta_1 and delta_16 is not discussed in the paper; it reveals the method's fundamental precision ceiling for applications requiring sub-pixel accuracy.
         </p>
       </div>
     </div>
@@ -860,94 +742,27 @@
     <div class="wrap">
       <div class="lbl">Research Lineage</div>
       <h2 class="sec-title">Previous and Forward Papers</h2>
-      <p class="body-text" style="margin-bottom:32px;">
-        12 predecessor papers that make DiffTrack possible, and 8 forward-lineage papers that build on its contributions.
-      </p>
+      <p class="body-text" style="margin-bottom:32px;">12 predecessor papers that make DiffTrack possible, and 8 forward-lineage papers that build on its contributions.</p>
 
       <h3 class="sub-heading" style="margin-top:0;">← Predecessor Papers</h3>
       <div class="tbl-wrap" style="margin-bottom:40px;">
         <table>
           <thead>
-            <tr>
-              <th style="width:30%">Paper</th>
-              <th style="width:28%">New Idea Introduced</th>
-              <th style="width:28%">How It Helped Build DiffTrack</th>
-              <th>Concept</th>
-            </tr>
+            <tr><th style="width:30%">Paper</th><th style="width:28%">New Idea Introduced</th><th style="width:28%">How It Helped Build DiffTrack</th><th>Concept</th></tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="n" style="font-size:12px;">Emergent Correspondence from Image Diffusion<br><span style="color:var(--text-muted);font-size:11px;">Tang et al., NeurIPS 2023</span></td>
-              <td class="nd" style="font-size:12px;">Showed image diffusion models contain emergent geometric correspondences</td>
-              <td class="nd" style="font-size:12px;">Direct foundation — extends from images→video, 2 frames→full temporal sequences</td>
-              <td><span class="tag-t">Temporal</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">Space-Time Correspondence as Contrastive Random Walk<br><span style="color:var(--text-muted);font-size:11px;">Jabri et al., NeurIPS 2020</span></td>
-              <td class="nd" style="font-size:12px;">Self-supervised spatiotemporal correspondence</td>
-              <td class="nd" style="font-size:12px;">Motivated temporal matching metrics and long-range consistency evaluation</td>
-              <td><span class="tag-t">Temporal</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">Semantics Meets Temporal Correspondence<br><span style="color:var(--text-muted);font-size:11px;">Qian et al., ICCV 2023</span></td>
-              <td class="nd" style="font-size:12px;">Semantic cues influence temporal correspondence</td>
-              <td class="nd" style="font-size:12px;">Inspired analysis of text-attention interference in temporal matching</td>
-              <td><span class="tag-t">Temporal</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">Self-Rectifying Diffusion Sampling with PAG<br><span style="color:var(--text-muted);font-size:11px;">Ahn et al., ECCV 2024</span></td>
-              <td class="nd" style="font-size:12px;">Attention perturbation to guide diffusion sampling</td>
-              <td class="nd" style="font-size:12px;">Direct predecessor to Cross-Frame Attention Guidance (CAG)</td>
-              <td><span class="tag-c">CAG</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">Diffusion Model for Dense Matching<br><span style="color:var(--text-muted);font-size:11px;">Nam et al., 2023</span></td>
-              <td class="nd" style="font-size:12px;">Diffusion features for dense correspondence</td>
-              <td class="nd" style="font-size:12px;">Evidence that diffusion models encode geometric structure, motivating Q/K analysis</td>
-              <td><span class="tag-c">Q-K Attn</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">Unsupervised Semantic Correspondence via Stable Diffusion<br><span style="color:var(--text-muted);font-size:11px;">Hedlin et al., NeurIPS 2023</span></td>
-              <td class="nd" style="font-size:12px;">Diffusion cross-attention for semantic matching</td>
-              <td class="nd" style="font-size:12px;">Motivated query-key similarity and attention score metrics</td>
-              <td><span class="tag-c">Q-K Attn</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">TAP-Vid Benchmark<br><span style="color:var(--text-muted);font-size:11px;">Doersch et al., NeurIPS 2022</span></td>
-              <td class="nd" style="font-size:12px;">Standard benchmark for point tracking</td>
-              <td class="nd" style="font-size:12px;">Provides the evaluation protocol — all our experiments use this</td>
-              <td><span class="tag-k">Tracking</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">CoTracker<br><span style="color:var(--text-muted);font-size:11px;">Karaev et al., ECCV 2024</span></td>
-              <td class="nd" style="font-size:12px;">Long-range point tracking via joint optimization</td>
-              <td class="nd" style="font-size:12px;">Provided pseudo-ground-truth for DiffTrack evaluation</td>
-              <td><span class="tag-k">Tracking</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">CoTracker3<br><span style="color:var(--text-muted);font-size:11px;">Karaev et al., 2024</span></td>
-              <td class="nd" style="font-size:12px;">Tracking via pseudo-labeling real videos</td>
-              <td class="nd" style="font-size:12px;">Strengthened the baseline for evaluating tracking accuracy</td>
-              <td><span class="tag-k">Tracking</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">Particle Video Revisited<br><span style="color:var(--text-muted);font-size:11px;">Harley et al., ECCV 2022</span></td>
-              <td class="nd" style="font-size:12px;">Long-range point tracking with occlusion handling</td>
-              <td class="nd" style="font-size:12px;">Motivated focus on long-range temporal consistency</td>
-              <td><span class="tag-k">Tracking</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">CATs: Cost Aggregation Transformers<br><span style="color:var(--text-muted);font-size:11px;">Cho et al., NeurIPS 2021</span></td>
-              <td class="nd" style="font-size:12px;">Transformer-based cost aggregation for correspondence</td>
-              <td class="nd" style="font-size:12px;">Inspired layer-wise correspondence probing</td>
-              <td><span class="tag-t">Temporal</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">Neural Matching Fields<br><span style="color:var(--text-muted);font-size:11px;">Hong et al., NeurIPS 2022</span></td>
-              <td class="nd" style="font-size:12px;">Implicit representation of matching fields</td>
-              <td class="nd" style="font-size:12px;">Conceptual basis for the matching confidence metric</td>
-              <td><span class="tag-t">Temporal</span></td>
-            </tr>
+            <tr><td class="n" style="font-size:12px;">Emergent Correspondence from Image Diffusion<br><span style="color:var(--text-muted);font-size:11px;">Tang et al., NeurIPS 2023</span></td><td class="nd" style="font-size:12px;">Emergent geometric correspondences in image diffusion models</td><td class="nd" style="font-size:12px;">Direct foundation — extends images→video, 2 frames→temporal sequences</td><td><span class="tag-t">Temporal</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">Space-Time Correspondence as Contrastive Random Walk<br><span style="color:var(--text-muted);font-size:11px;">Jabri et al., NeurIPS 2020</span></td><td class="nd" style="font-size:12px;">Self-supervised spatiotemporal correspondence</td><td class="nd" style="font-size:12px;">Motivated temporal matching metrics and long-range consistency evaluation</td><td><span class="tag-t">Temporal</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">Semantics Meets Temporal Correspondence<br><span style="color:var(--text-muted);font-size:11px;">Qian et al., ICCV 2023</span></td><td class="nd" style="font-size:12px;">Semantic cues influence temporal correspondence</td><td class="nd" style="font-size:12px;">Inspired analysis of text-attention interference in temporal matching</td><td><span class="tag-t">Temporal</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">Self-Rectifying Diffusion Sampling with PAG<br><span style="color:var(--text-muted);font-size:11px;">Ahn et al., ECCV 2024</span></td><td class="nd" style="font-size:12px;">Attention perturbation to guide diffusion sampling</td><td class="nd" style="font-size:12px;">Direct predecessor to Cross-Frame Attention Guidance (CAG)</td><td><span class="tag-c">CAG</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">Diffusion Model for Dense Matching<br><span style="color:var(--text-muted);font-size:11px;">Nam et al., 2023</span></td><td class="nd" style="font-size:12px;">Diffusion features for dense correspondence</td><td class="nd" style="font-size:12px;">Evidence diffusion models encode geometric structure → Q/K analysis</td><td><span class="tag-c">Q-K Attn</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">Unsupervised Semantic Correspondence via Stable Diffusion<br><span style="color:var(--text-muted);font-size:11px;">Hedlin et al., NeurIPS 2023</span></td><td class="nd" style="font-size:12px;">Diffusion cross-attention for semantic matching</td><td class="nd" style="font-size:12px;">Motivated query-key similarity and attention score metrics</td><td><span class="tag-c">Q-K Attn</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">TAP-Vid Benchmark<br><span style="color:var(--text-muted);font-size:11px;">Doersch et al., NeurIPS 2022</span></td><td class="nd" style="font-size:12px;">Standard benchmark for point tracking</td><td class="nd" style="font-size:12px;">Provides the evaluation protocol — all our experiments use this</td><td><span class="tag-k">Tracking</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">CoTracker<br><span style="color:var(--text-muted);font-size:11px;">Karaev et al., ECCV 2024</span></td><td class="nd" style="font-size:12px;">Long-range point tracking via joint optimization</td><td class="nd" style="font-size:12px;">Provided pseudo-ground-truth for DiffTrack evaluation</td><td><span class="tag-k">Tracking</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">CoTracker3<br><span style="color:var(--text-muted);font-size:11px;">Karaev et al., 2024</span></td><td class="nd" style="font-size:12px;">Tracking via pseudo-labeling real videos</td><td class="nd" style="font-size:12px;">Strengthened baseline for evaluating tracking accuracy</td><td><span class="tag-k">Tracking</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">Particle Video Revisited<br><span style="color:var(--text-muted);font-size:11px;">Harley et al., ECCV 2022</span></td><td class="nd" style="font-size:12px;">Long-range tracking with occlusion handling</td><td class="nd" style="font-size:12px;">Motivated focus on long-range temporal consistency</td><td><span class="tag-k">Tracking</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">CATs: Cost Aggregation Transformers<br><span style="color:var(--text-muted);font-size:11px;">Cho et al., NeurIPS 2021</span></td><td class="nd" style="font-size:12px;">Transformer-based cost aggregation for correspondence</td><td class="nd" style="font-size:12px;">Inspired layer-wise correspondence probing</td><td><span class="tag-t">Temporal</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">Neural Matching Fields<br><span style="color:var(--text-muted);font-size:11px;">Hong et al., NeurIPS 2022</span></td><td class="nd" style="font-size:12px;">Implicit representation of matching fields</td><td class="nd" style="font-size:12px;">Conceptual basis for the matching confidence metric</td><td><span class="tag-t">Temporal</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -956,62 +771,17 @@
       <div class="tbl-wrap">
         <table>
           <thead>
-            <tr>
-              <th style="width:30%">Paper</th>
-              <th style="width:28%">New Idea Introduced</th>
-              <th style="width:28%">How It Builds on DiffTrack</th>
-              <th>Concept</th>
-            </tr>
+            <tr><th style="width:30%">Paper</th><th style="width:28%">New Idea Introduced</th><th style="width:28%">How It Builds on DiffTrack</th><th>Concept</th></tr>
           </thead>
           <tbody>
-            <tr>
-              <td class="n" style="font-size:12px;">Zero-Shot Video Restoration with Video Diffusion Models<br><span style="color:var(--text-muted);font-size:11px;">Cao et al., 2026</span></td>
-              <td class="nd" style="font-size:12px;">Temporal-strengthening post-processing and latent fusion</td>
-              <td class="nd" style="font-size:12px;">Uses emergent temporal correspondences in video DiTs to stabilize restoration</td>
-              <td><span class="tag-t">Temporal</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">Counterfactual Tracking with Video Diffusion Models<br><span style="color:var(--text-muted);font-size:11px;">Shrivastava et al., ICLR 2026</span></td>
-              <td class="nd" style="font-size:12px;">Counterfactual prompting to propagate point markers through denoising</td>
-              <td class="nd" style="font-size:12px;">Extends zero-shot tracking — validates that DiTs encode motion via prompting alone</td>
-              <td><span class="tag-k">Tracking</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">Zero-Shot Video Deraining with Video Diffusion Models<br><span style="color:var(--text-muted);font-size:11px;">Varanka et al., WACV</span></td>
-              <td class="nd" style="font-size:12px;">Attention switching to maintain temporal consistency</td>
-              <td class="nd" style="font-size:12px;">Builds on cross-frame attention analysis — modifying attention improves temporal coherence</td>
-              <td><span class="tag-c">CAG</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">ZeroTrail: Zero-Shot Trajectory Control for Video DiMs<br><span style="color:var(--text-muted);font-size:11px;">Lu et al., NeurIPS Workshop</span></td>
-              <td class="nd" style="font-size:12px;">Selective Attention Guidance Module (SAGM) for trajectory control</td>
-              <td class="nd" style="font-size:12px;">Extends CAG into a full trajectory-control system</td>
-              <td><span class="tag-c">CAG</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">Cross-Attention for Zero-Shot Editing of T2V Models<br><span style="color:var(--text-muted);font-size:11px;">Motamed et al., CVPR Workshop 2024</span></td>
-              <td class="nd" style="font-size:12px;">Cross-attention controls object shape, position, movement</td>
-              <td class="nd" style="font-size:12px;">Builds on insight that query-key layers govern temporal structure — applies to editing</td>
-              <td><span class="tag-c">Q-K Attn</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">DiTFlow: Video Motion Transfer with Diffusion Transformers<br><span style="color:var(--text-muted);font-size:11px;">Pondaven et al., CVPR 2025</span></td>
-              <td class="nd" style="font-size:12px;">Attention Motion Flow (AMF) from cross-frame attention maps</td>
-              <td class="nd" style="font-size:12px;">Directly builds on discovery that cross-frame attention encodes motion — motion transfer</td>
-              <td><span class="tag-t">Temporal</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">VDT: Video Diffusion Transformers via Mask Modeling<br><span style="color:var(--text-muted);font-size:11px;">Lu et al., 2025</span></td>
-              <td class="nd" style="font-size:12px;">Modular temporal attention and unified spatial-temporal modeling</td>
-              <td class="nd" style="font-size:12px;">Designs architectures with explicit temporal modules — motivated by layer-sensitivity finding</td>
-              <td><span class="tag-t">Temporal</span></td>
-            </tr>
-            <tr>
-              <td class="n" style="font-size:12px;">Weighted Cross-Frame Attention for T2V Consistency<br><span style="color:var(--text-muted);font-size:11px;">Wang et al., 2025</span></td>
-              <td class="nd" style="font-size:12px;">Weighted cross-frame attention for temporal coherence</td>
-              <td class="nd" style="font-size:12px;">Extends CAG by weighting cross-frame attention to stabilize long videos</td>
-              <td><span class="tag-c">CAG</span></td>
-            </tr>
+            <tr><td class="n" style="font-size:12px;">Zero-Shot Video Restoration with Video DiMs<br><span style="color:var(--text-muted);font-size:11px;">Cao et al., 2026</span></td><td class="nd" style="font-size:12px;">Temporal-strengthening post-processing and latent fusion</td><td class="nd" style="font-size:12px;">Uses emergent temporal correspondences in video DiTs to stabilize restoration</td><td><span class="tag-t">Temporal</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">Counterfactual Tracking with Video Diffusion Models<br><span style="color:var(--text-muted);font-size:11px;">Shrivastava et al., ICLR 2026</span></td><td class="nd" style="font-size:12px;">Counterfactual prompting to propagate point markers</td><td class="nd" style="font-size:12px;">Validates that DiTs encode motion — extends zero-shot tracking via prompting</td><td><span class="tag-k">Tracking</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">Zero-Shot Video Deraining with Video DiMs<br><span style="color:var(--text-muted);font-size:11px;">Varanka et al., WACV</span></td><td class="nd" style="font-size:12px;">Attention switching for temporal consistency during deraining</td><td class="nd" style="font-size:12px;">Modifying cross-frame attention improves temporal coherence</td><td><span class="tag-c">CAG</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">ZeroTrail: Zero-Shot Trajectory Control<br><span style="color:var(--text-muted);font-size:11px;">Lu et al., NeurIPS Workshop</span></td><td class="nd" style="font-size:12px;">Selective Attention Guidance Module (SAGM)</td><td class="nd" style="font-size:12px;">Extends CAG into a full trajectory-control system</td><td><span class="tag-c">CAG</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">Cross-Attention for Zero-Shot Editing of T2V<br><span style="color:var(--text-muted);font-size:11px;">Motamed et al., CVPR Workshop 2024</span></td><td class="nd" style="font-size:12px;">Cross-attention controls object shape and movement</td><td class="nd" style="font-size:12px;">Builds on insight that Q-K layers govern temporal structure → applied to editing</td><td><span class="tag-c">Q-K Attn</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">DiTFlow: Video Motion Transfer with DiTs<br><span style="color:var(--text-muted);font-size:11px;">Pondaven et al., CVPR 2025</span></td><td class="nd" style="font-size:12px;">Attention Motion Flow (AMF) from cross-frame attention maps</td><td class="nd" style="font-size:12px;">Directly builds on discovery that cross-frame attention encodes motion</td><td><span class="tag-t">Temporal</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">VDT: Video DiTs via Mask Modeling<br><span style="color:var(--text-muted);font-size:11px;">Lu et al., 2025</span></td><td class="nd" style="font-size:12px;">Modular temporal attention and unified spatial-temporal modeling</td><td class="nd" style="font-size:12px;">Designs explicit temporal modules — motivated by layer-sensitivity finding</td><td><span class="tag-t">Temporal</span></td></tr>
+            <tr><td class="n" style="font-size:12px;">Weighted Cross-Frame Attention for T2V<br><span style="color:var(--text-muted);font-size:11px;">Wang et al., 2025</span></td><td class="nd" style="font-size:12px;">Weighted cross-frame attention for temporal coherence</td><td class="nd" style="font-size:12px;">Extends CAG by weighting cross-frame attention to stabilize long videos</td><td><span class="tag-c">CAG</span></td></tr>
           </tbody>
         </table>
       </div>
@@ -1040,13 +810,11 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <p>DiffTrack Parameter Study &amp; Limitation Analysis · Sohum Damani · EE243 Advanced Computer Vision · Spring 2026</p>
-    <p>Based on <a href="https://arxiv.org/abs/2506.17220" target="_blank">DiffTrack (NeurIPS 2025)</a> by Nam et al. · KAIST AI, Korea University, Google DeepMind &nbsp;·&nbsp; <a href="#top">Back to top ↑</a></p>
+    <p>Based on <a href="https://arxiv.org/abs/2506.17220" target="_blank">DiffTrack (NeurIPS 2025)</a> by Nam et al. &nbsp;·&nbsp; <a href="#top">Back to top ↑</a></p>
   </footer>
 
-  <!-- CURSOR -->
   <script>
     const dot  = document.getElementById('cur-dot');
     const ring = document.getElementById('cur-ring');
@@ -1063,7 +831,7 @@
       ring.style.top  = ry + 'px';
       requestAnimationFrame(animRing);
     })();
-    document.querySelectorAll('a, button, .finding, .m-card, .cag-card').forEach(el => {
+    document.querySelectorAll('a, button, .finding, .m-card, .cag-card, .vid-card').forEach(el => {
       el.addEventListener('mouseenter', () => document.body.classList.add('cur-hover'));
       el.addEventListener('mouseleave', () => document.body.classList.remove('cur-hover'));
     });
